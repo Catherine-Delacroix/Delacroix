@@ -13,7 +13,7 @@ from async_timeout import timeout
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _
-from .cogs.utils.db import Database
+from .cogs.utils.db import Database as datab
 
 
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
@@ -40,7 +40,7 @@ class Delacroix(commands.Cog):
         if member is None:
             member = ctx.author
 
-        gd = await get_guild_data(self.bot, ctx.guild)
+        gd = await datab.get_guild_data(self.bot, ctx.guild)
 #        gd = await datab.Database.get_guild_data(datab.Database, ctx.guild)
 
         try:
