@@ -95,7 +95,7 @@ class Delacroix(commands.Cog):
         for member in members:
             await self.config.member(member).balance.set(amount)
 
-        await ctx.send(await ("Balances changed"))
+        await ctx.send("Balances changed")
 
     @checks.mod_or_permissions()
     @commands.command()
@@ -111,7 +111,7 @@ class Delacroix(commands.Cog):
             final = amount + bal
             await self.config.member(member).balance.set(final)
 
-        await ctx.send(await (":spankme: given"))
+        await ctx.send(":spankme: given")
 
     @checks.mod_or_permissions()
     @commands.command()
@@ -125,7 +125,7 @@ class Delacroix(commands.Cog):
             bal = await self.config.member(member).balance()
             final = bal - amount
             await self.config.member(member).balance.set(final)
-            await ctx.send(await (":spankme: taken"))
+            await ctx.send(":spankme: taken")
 
     @commands.command()
     async def pay(self, ctx, amount: NumberConverter, member: discord.Member):
@@ -146,7 +146,7 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(member).balance()
         final = bal + amount
         await self.config.member(member).balance.set(final)
-        await ctx.send((await ("Successfully paid {} :spankme: to {}")).format(amount, member))
+        await ctx.send("Successfully paid {} :spankme: to {}").format(amount, member)
 
     @commands.command(aliases=["createlisting", "new", "list"])
     async def create(self, ctx, item: str, cost: NumberConverter, *, picture: str):
