@@ -68,7 +68,7 @@ class Delacroix(commands.Cog):
         await dest.send(embed=embed)
 
     @checks.mod_or_permissions()
-    @commands.command(aliases=["set"])
+    @commands.command(aliases=["setb"])
     async def setbalance(self, ctx, amount: NumberConverter, *members: MemberConverter):
         """Set the :spankme: of the given members to an amount
         Example: !setbalance 500 everyone
