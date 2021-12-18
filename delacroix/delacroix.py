@@ -13,7 +13,7 @@ from async_timeout import timeout
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _
-from .cogs.utils.db import Database as datab
+#from .cogs.utils import db
 
 
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
@@ -24,6 +24,17 @@ class Delacroix(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bids = list()
+        self.config = Config.get_conf(self, identifier=1234567890)
+        default_global = {}
+        default_guild = { 
+            "balances": {} 
+            }
+        default_member = {
+            "balance":0
+        }
+        self.config.register_global(**default_global)
+        self.config.register_guild(**default_guild)
+        self.config.register_member(**default_member)
 
     @commands.command()
     async def mycom(self, ctx):
@@ -33,15 +44,15 @@ class Delacroix(commands.Cog):
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
-        """Check your or another users :money: """
+        """Check your or another users :spankme: """
 
         dest = ctx.channel
 
         if member is None:
             member = ctx.author
 
-        gd = await datab.get_guild_data(self.bot, ctx.guild)
-#        gd = await datab.Database.get_guild_data(datab.Database, ctx.guild)
+#        gd = await self.bot.get_guild_data(ctx.guild)
+        #balances = await self.config.member(ctx.author).balances()
 
         try:
             is_mod = checks.role_or_permissions(ctx,
@@ -50,15 +61,15 @@ class Delacroix(commands.Cog):
         except:
             is_mod = False
 
-        hide = gd.get("hideinv", False)
+        #hide = gd.get("hideinv", False)
 
-        if not is_mod and hide:
-            member = ctx.author
+#        if not is_mod:
+#            member = ctx.author
 
-        if hide:
-            dest = ctx.author
+#        if hide:
+#            dest = ctx.author
 
-        bal = await ctx.bot.di.get_all_balances(member)
+        bal = await self.config.member(member).balance()
 
         data = """Total:\t\t {:.2f} :spankme: """
 
@@ -82,8 +93,7 @@ class Delacroix(commands.Cog):
         members = chain(members)
 
         for member in members:
-            async with self.bot.di.rm.lock(member.id):
-                await self.bot.di.set_eco(member, amount)
+            await self.config.member(member).balance().set(amount)
 
         await ctx.send(await _(ctx, "Balances changed"))
 
@@ -97,8 +107,9 @@ class Delacroix(commands.Cog):
         members = chain(members)
 
         for member in members:
-            async with self.bot.di.rm.lock(member.id):
-                await self.bot.di.add_eco(member, amount)
+            bal = await self.config.member(member).balance()
+            final = amount + bal
+            await self.config.member(member).balance().set(final)
 
         await ctx.send(await _(ctx, ":spankme: given"))
 
@@ -109,17 +120,11 @@ class Delacroix(commands.Cog):
         Example: !takemoney 5000 @Henry#6174
         Requires Bot Moderator or Bot Admin"""
         members = chain(members)
-        succ = False
 
         for member in members:
-            async with self.bot.di.rm.lock(member.id):
-                try:
-                    await self.bot.di.take_from_bank(member, amount)
-                    succ = True
-                except ValueError:
-                    await ctx.send((await _(ctx, "Could not take :spankme: from {}, user does not have enough")))
-
-        if succ:
+            bal = await self.config.member(member).balance()
+            final = bal - amount
+            await self.config.member(member).balance().set(final)
             await ctx.send(await _(ctx, ":spankme: taken"))
 
     @commands.command()
@@ -131,10 +136,16 @@ class Delacroix(commands.Cog):
                 await _(ctx, "Bots don't have :spankme: to pay other people! Use !givemoney instead of !pay"))
             return
         amount = abs(amount)
-        async with self.bot.di.rm.lock(ctx.author.id):
-            await self.bot.di.add_eco(ctx.author, -amount)
-        async with self.bot.di.rm.lock(member.id):
-            await self.bot.di.add_eco(member, amount)
+
+        ##Giver
+        bal = await self.config.member(ctx.author).balance()
+        final = bal - amount
+        await self.config.member(ctx.author).balance().set(final)
+
+        ##Receiver
+        bal = await self.config.member(member).balance()
+        final = bal + amount
+        await self.config.member(member).balance().set(final)
         await ctx.send((await _(ctx, "Successfully paid {} :spankme: to {}")).format(amount, member))
 
     @commands.command(aliases=["createlisting", "new", "list"])
