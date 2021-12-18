@@ -74,7 +74,7 @@ class Delacroix(commands.Cog):
         data = """Total:\t\t {:.2f} :spankme: """
 
         embed = discord.Embed(
-            description=data.format(int(bal[0])),
+            description=data.format(int(bal)),
             color=randint(0, 0xFFFFFF),
         )
 
