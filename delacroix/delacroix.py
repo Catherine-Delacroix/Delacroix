@@ -9,9 +9,9 @@ import discord
 from async_timeout import timeout
 from discord.ext import commands
 
-from .utils import checks
-from .utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
-from .utils.translation import _
+from .cogs.utils import checks
+from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
+from .cogs.utils.translation import _
 
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
 
