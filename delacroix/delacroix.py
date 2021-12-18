@@ -95,7 +95,7 @@ class Delacroix(commands.Cog):
         for member in members:
             await self.config.member(member).balance.set(amount)
 
-        await ctx.send("Balance(s) changed by {}".format(amount))
+        await ctx.send(await _(ctx, "Balances changed"))
 
     @checks.mod_or_permissions()
     @commands.command()
@@ -109,7 +109,7 @@ class Delacroix(commands.Cog):
         for member in members:
             bal = await self.config.member(member).balance()
             final = amount + bal
-            await self.config.member(member).balance().set(final)
+            await self.config.member(member).balance.set(final)
 
         await ctx.send(await _(ctx, ":spankme: given"))
 
@@ -124,7 +124,7 @@ class Delacroix(commands.Cog):
         for member in members:
             bal = await self.config.member(member).balance()
             final = bal - amount
-            await self.config.member(member).balance().set(final)
+            await self.config.member(member).balance.set(final)
             await ctx.send(await _(ctx, ":spankme: taken"))
 
     @commands.command()
@@ -140,12 +140,12 @@ class Delacroix(commands.Cog):
         ##Giver
         bal = await self.config.member(ctx.author).balance()
         final = bal - amount
-        await self.config.member(ctx.author).balance().set(final)
+        await self.config.member(ctx.author).balance.set(final)
 
         ##Receiver
         bal = await self.config.member(member).balance()
         final = bal + amount
-        await self.config.member(member).balance().set(final)
+        await self.config.member(member).balance.set(final)
         await ctx.send((await _(ctx, "Successfully paid {} :spankme: to {}")).format(amount, member))
 
     @commands.command(aliases=["createlisting", "new", "list"])
