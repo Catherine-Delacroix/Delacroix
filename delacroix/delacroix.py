@@ -93,7 +93,7 @@ class Delacroix(commands.Cog):
         members = chain(members)
 
         for member in members:
-            await self.config.member(member).balance().set(amount)
+            await self.config.member(member).balance.set(amount)
 
         await ctx.send(await _(ctx, "Balances changed"))
 
