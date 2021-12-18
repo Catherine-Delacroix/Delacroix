@@ -7,7 +7,7 @@ from recordclass import recordclass
 
 import discord
 from async_timeout import timeout
-from discord.ext import commands
+#from discord.ext import commands
 
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
