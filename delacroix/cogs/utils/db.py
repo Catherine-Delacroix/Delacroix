@@ -23,7 +23,6 @@ import ujson as json
 import asyncpg
 import copy
 
-
 class Database:
     def __init__(self, bot):
         self.bot = bot
@@ -196,3 +195,5 @@ class Database:
         async with self._conn.acquire() as connection:
             response = await connection.fetchval(req)
         return response if response else copy.copy(self.bot.default_udata[name])
+
+#self = Database

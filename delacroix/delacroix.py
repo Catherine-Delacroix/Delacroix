@@ -40,8 +40,8 @@ class Delacroix(commands.Cog):
         if member is None:
             member = ctx.author
 
-#        gd = await self.bot.db.get_guild_data(ctx.guild)
-        gd = await datab.Database.get_guild_data(datab.Database, ctx.guild)
+        gd = await self.bot.db.get_guild_data(ctx.guild)
+#        gd = await datab.Database.get_guild_data(datab.Database, ctx.guild)
 
         try:
             is_mod = checks.role_or_permissions(ctx,
