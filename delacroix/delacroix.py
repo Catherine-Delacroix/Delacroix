@@ -12,7 +12,7 @@ from async_timeout import timeout
 
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
-from .cogs.utils.translation import _
+#from .cogs.utils.translation import _
 #from .cogs.utils import db
 
 
@@ -95,7 +95,7 @@ class Delacroix(commands.Cog):
         for member in members:
             await self.config.member(member).balance.set(amount)
 
-        await ctx.send(await _(ctx, "Balances changed"))
+        await ctx.send(await (ctx, "Balances changed"))
 
     @checks.mod_or_permissions()
     @commands.command()
@@ -111,7 +111,7 @@ class Delacroix(commands.Cog):
             final = amount + bal
             await self.config.member(member).balance.set(final)
 
-        await ctx.send(await _(ctx, ":spankme: given"))
+        await ctx.send(await (ctx, ":spankme: given"))
 
     @checks.mod_or_permissions()
     @commands.command()
@@ -125,7 +125,7 @@ class Delacroix(commands.Cog):
             bal = await self.config.member(member).balance()
             final = bal - amount
             await self.config.member(member).balance.set(final)
-            await ctx.send(await _(ctx, ":spankme: taken"))
+            await ctx.send(await (ctx, ":spankme: taken"))
 
     @commands.command()
     async def pay(self, ctx, amount: NumberConverter, member: discord.Member):
@@ -133,7 +133,7 @@ class Delacroix(commands.Cog):
         Example: rp!pay 500 @Henry#6174"""
         if ctx.author.bot:
             await ctx.send(
-                await _(ctx, "Bots don't have :spankme: to pay other people! Use !givemoney instead of !pay"))
+                await (ctx, "Bots don't have :spankme: to pay other people! Use !givemoney instead of !pay"))
             return
         amount = abs(amount)
 
