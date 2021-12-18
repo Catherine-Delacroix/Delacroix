@@ -1,4 +1,5 @@
 from redbot.core import commands
+from redbot.core import Config
 import asyncio
 from collections import Counter
 from random import choice, randint
@@ -12,6 +13,8 @@ from async_timeout import timeout
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _
+from .cogs.utils import db as datab
+
 
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
 
@@ -30,14 +33,15 @@ class Delacroix(commands.Cog):
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
-        """Check your or another users :spankme: """
+        """Check your or another users :money: """
 
         dest = ctx.channel
 
         if member is None:
             member = ctx.author
 
-        gd = await self.bot.db.get_guild_data(ctx.guild)
+#        gd = await self.bot.db.get_guild_data(ctx.guild)
+        gd = await datab.Database.get_guild_data(ctx.guild)
 
         try:
             is_mod = checks.role_or_permissions(ctx,
