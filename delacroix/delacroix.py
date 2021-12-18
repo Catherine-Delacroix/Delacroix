@@ -95,7 +95,7 @@ class Delacroix(commands.Cog):
         for member in members:
             await self.config.member(member).balance.set(amount)
 
-        await ctx.send(await _(ctx, "Balances changed"))
+        await ctx.send(await(ctx, "Balances changed"))
 
     @checks.mod_or_permissions()
     @commands.command()
