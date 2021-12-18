@@ -21,11 +21,6 @@ class Delacroix(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bids = list()
-        self.bot.shutdowns.append(self.shutdown)
-
-    async def shutdown(self):
-        with open("resources/lotteries.json", 'w') as lf:
-            lf.write(json.dumps(self.bot.lotteries))
 
     @commands.command()
     async def mycom(self, ctx):
