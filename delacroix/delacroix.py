@@ -277,7 +277,7 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
-                    image = [[x['picture']] for x, y in zip(chunks[i], users)]
+                    image = [[x['picture']] for x in zip(chunks[i], users)]
                     fin.insert(0, [await _(ctx, "ID"),
                                    await _(ctx, "COST"),
                                    await _(ctx, "ITEM"),
