@@ -219,12 +219,13 @@ class Delacroix(commands.Cog):
 
         fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y)] for x, y in
                zip(chunks[i], users)]
+        image = [[x['picture']] for x, y in zip(chunks[i], users)]
         fin.insert(0, [await _(ctx, "ID"),
                        await _(ctx, "COST"),
                        await _(ctx, "ITEM"),
                        await _(ctx, "OWNER")])
         embed.description = "```\n{}\n```".format(format_table(fin))
-
+        embed.set_image(image)
         max = len(chunks) - 1
 
         msg = await ctx.send(embed=embed)
@@ -235,7 +236,7 @@ class Delacroix(commands.Cog):
             try:
                 r, u = await self.bot.wait_for("reaction_add", check=lambda r, u: r.message.id == msg.id, timeout=80)
             except asyncio.TimeoutError:
-                await ctx.send("Timed out! Try again")
+                #await ctx.send("Timed out! Try again")
                 await msg.delete()
                 return
 
@@ -257,11 +258,13 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
+                    image = [[x['picture']] for x, y in zip(chunks[i], users)]
                     fin.insert(0, [await _(ctx, "ID"),
                                    await _(ctx, "COST"),
                                    await _(ctx, "ITEM"),
                                    await _(ctx, "OWNER")])
                     embed.description = "```\n{}\n```".format(format_table(fin))
+                    embed.set_image(image)
 
                     await msg.edit(embed=embed)
 
@@ -274,16 +277,18 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
+                    image = [[x['picture']] for x, y in zip(chunks[i], users)]
                     fin.insert(0, [await _(ctx, "ID"),
                                    await _(ctx, "COST"),
                                    await _(ctx, "ITEM"),
                                    await _(ctx, "OWNER")])
                     embed.description = "```\n{}\n```".format(format_table(fin))
+                    embed.set_image(image)
 
                     await msg.edit(embed=embed)
             else:
                 await msg.delete()
-                await ctx.send("Closing")
+                #await ctx.send("Closing")
                 return
 
             try:

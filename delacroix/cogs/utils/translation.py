@@ -58,6 +58,6 @@ def format_table(lines, separate_head=True):
     for i, line in enumerate(lines):
         fin.append(print_string.format(*line))
         if i == 0 and separate_head:
-            fin.append("-" * (sum(widths) + 3 * (len(widths) - 1)))
+            fin.append("-" * (sum(widths) + 3 * (len(widths) - 3)))
 
     return "\n".join(fin)
