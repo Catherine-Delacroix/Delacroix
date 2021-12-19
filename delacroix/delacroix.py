@@ -234,8 +234,8 @@ class Delacroix(commands.Cog):
 
         max = len(chunks) - 1
         i = 0
-        print("i = {}").format(i)
-        print("max = {}").format(max)
+        print("i = "+str(i))
+        print("max = "+str(max))
 
         msg = await ctx.send(embed=embed)
         for emote in emotes:
@@ -267,8 +267,8 @@ class Delacroix(commands.Cog):
                     if i < 0:
                         i = max
                         pass
-                    print("i = {}").format(i)
-                    print("max = {}").format(max)
+                    print("i = "+str(i))
+                    print("max = "+str(max))
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
@@ -293,8 +293,8 @@ class Delacroix(commands.Cog):
                 else:
                     embed.clear_fields()
                     i += 1
-                    print("i = {}").format(i)
-                    print("max = {}").format(max)
+                    print("i = "+str(i))
+                    print("max = "+str(max))
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
