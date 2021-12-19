@@ -232,7 +232,7 @@ class Delacroix(commands.Cog):
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
         embed.set_image(url = image)
 
-        max = len(chunks) - 1
+        max = len(chunks)# - 1
         i = 0
         print("i = "+str(i))
         print("max = "+str(max))
