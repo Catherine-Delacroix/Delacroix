@@ -36,7 +36,7 @@ class Delacroix(commands.Cog):
             }
         }
         default_member = {
-            "balance":int(0)
+            "balance":0
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -46,7 +46,7 @@ class Delacroix(commands.Cog):
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
-        """Check your or another users Lewds """
+        """Check your or another users balance """
 
         dest = ctx.channel
 
@@ -73,7 +73,7 @@ class Delacroix(commands.Cog):
 
         bal = await self.config.member(member).balance()
 
-        data = """Total:\t\t {:.2f} Lewds """
+        data = """Total:\t\t {} """
 
         embed = discord.Embed(
             description=data.format(int(bal)),
@@ -264,6 +264,7 @@ class Delacroix(commands.Cog):
                     pass
                 else:
                     i -= 1
+                    if
                     embed.clear_fields()
                     print("i = "+str(i))
                     print("max = "+str(max))
@@ -287,6 +288,7 @@ class Delacroix(commands.Cog):
 
             elif r.emoji == emotes[1]:
                 if i == max:
+                    i = 0
                     pass
                 else:
                     embed.clear_fields()
