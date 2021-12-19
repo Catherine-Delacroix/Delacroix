@@ -172,9 +172,9 @@ class Delacroix(commands.Cog):
         """View the current auction listings"""
         um = await self.config.guild(ctx.guild).market()
         market = list(um.values())
-        desc = """\u27A1 to see the next page
-                    \n\u2B05 to go back
-                    \n\u274C to exit"""
+        #desc = """\u27A1 to see the next page
+        #            \n\u2B05 to go back
+        #            \n\u274C to exit"""
 
         if not market:
             await ctx.send("No items on the market to display.")
@@ -185,7 +185,7 @@ class Delacroix(commands.Cog):
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 
         chunks = []
-        clen = 10
+        clen = 1
         for i in range(0, len(market), clen):
             chunks.append(market[i:i + clen])
 
@@ -207,7 +207,7 @@ class Delacroix(commands.Cog):
                 del um[i]
             um.update(fr)
 #check for bugs here!!!!!!!!!!!!!!!!!!!!!
-            await self.config.guild(ctx.guild).market.set(um)
+            #await self.config.guild(ctx.guild).market.set(um)
             market = list(um.items())
             chunks = []
             for i in range(0, len(market), clen):
@@ -233,6 +233,9 @@ class Delacroix(commands.Cog):
         embed.set_image(url = image)
 
         max = len(chunks) - 1
+        i = 0
+        print("i = {}").format(i)
+        print("max = {}").format(max)
 
         msg = await ctx.send(embed=embed)
         for emote in emotes:
@@ -261,6 +264,11 @@ class Delacroix(commands.Cog):
                     pass
                 else:
                     i -= 1
+                    if i < 0:
+                        i = max
+                        pass
+                    print("i = {}").format(i)
+                    print("max = {}").format(max)
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
@@ -285,6 +293,8 @@ class Delacroix(commands.Cog):
                 else:
                     embed.clear_fields()
                     i += 1
+                    print("i = {}").format(i)
+                    print("max = {}").format(max)
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
