@@ -19,6 +19,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 from redbot.core import Config
+from redbot.core import commands
 
 async def _(ctx, translation):
     currency = ":spankme:"
