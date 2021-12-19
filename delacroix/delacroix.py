@@ -158,7 +158,7 @@ class Delacroix(commands.Cog):
         cost = abs(cost)
         market = await self.config.guild(ctx.guild).market()
 
-        id = randint(1000,9999)
+        id = str(randint(1000,9999))
         market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture)
 
         #async with self.bot.di.rm.lock(ctx.guild.id):
@@ -198,7 +198,7 @@ class Delacroix(commands.Cog):
             for listing, data in um.items():
                 for datum in data:
                     if 'item' not in listing:
-                        id = randint(1000,9999)
+                        id = str(randint(1000,9999))
                         fr[id] = dict(id=id, item=listing, user=ctx.author.id, cost=datum['cost'],
                                       picture=datum['picture'])
                 br.append(listing)
