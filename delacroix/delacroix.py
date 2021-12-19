@@ -289,6 +289,7 @@ class Delacroix(commands.Cog):
 
                     await msg.edit(embed=embed)
                     await msg.remove_reaction(emotes[0], u)
+                    pass
 
             elif r.emoji == emotes[1]:
                 if i == max:
@@ -318,6 +319,7 @@ class Delacroix(commands.Cog):
 
                     await msg.edit(embed=embed)
                     await msg.remove_reaction(emotes[1], u)
+                    pass
             else:
                 await msg.delete()
                 #await ctx.send("Closing")
