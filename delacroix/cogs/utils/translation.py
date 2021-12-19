@@ -20,9 +20,8 @@
 # DEALINGS IN THE SOFTWARE.
 from redbot.core import Config
 from redbot.core import commands
-from delacroix import  __init__
 
-async def _(self, ctx, translation):
+async def _(ctx, translation):
     currency = ":spankme:"
     if ctx.guild is not None:
         gd = await self.config.guild(ctx.guild)

@@ -12,7 +12,7 @@ from async_timeout import timeout
 
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
-from .cogs.utils.translation import _
+#from .cogs.utils.translation import _
 #from .cogs.utils import db
 
 
@@ -49,19 +49,19 @@ class Delacroix(commands.Cog):
         # Your code will go here
         await ctx.send("I can do stuff!")
 
-#    async def _(self, ctx, translation):
-#        currency = ":spankme:"
-#        if ctx.guild is not None:
-#            gd = await self.config.guild(ctx.guild)
-#            lang = gd.get("lang", "en")
-#            currency = gd.get("currency") or currency
-#            if lang != "en":
-#                try:
-#                    translation = ctx.bot.translations[translation][lang]
-#                except:
-#                    pass
-#
-#        return translation.replace("dollars", currency)
+    async def _(self, ctx, translation):
+        currency = ":spankme:"
+        if ctx.guild is not None:
+            gd = await self.config.guild(ctx.guild)
+            lang = gd.get("lang", "en")
+            currency = gd.get("currency") or currency
+            if lang != "en":
+                try:
+                    translation = ctx.bot.translations[translation][lang]
+                except:
+                    pass
+
+        return translation.replace("dollars", currency)
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
@@ -184,7 +184,7 @@ class Delacroix(commands.Cog):
         #    await self.bot.di.update_guild_market(ctx.guild, market)
         await self.config.guild(ctx.guild).market.set(market)
 
-        await ctx.send((await _(self, ctx, "Item listed with ID {}")).format(id))
+        await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
 
     @commands.group(aliases=["m", "auction"], invoke_without_command=True)
     async def market(self, ctx):
@@ -238,11 +238,11 @@ class Delacroix(commands.Cog):
 
         fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y), f"x{x['picture']}"] for x, y in
                zip(chunks[i], users)]
-        fin.insert(0, [await _(self, ctx, "ID"),
-                       await _(self, ctx, "COST"),
-                       await _(self, ctx, "ITEM"),
-                       await _(self, ctx, "OWNER"),
-                       await _(self, ctx, "PICTURE")])
+        fin.insert(0, [await _(ctx, "ID"),
+                       await _(ctx, "COST"),
+                       await _(ctx, "ITEM"),
+                       await _(ctx, "OWNER"),
+                       await _(ctx, "PICTURE")])
         embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
         max = len(chunks) - 1
@@ -277,11 +277,11 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
                            zip(chunks[i], users)]
-                    fin.insert(0, [await _(self, ctx, "ID"),
-                                   await _(self, ctx, "COST"),
-                                   await _(self, ctx, "ITEM"),
-                                   await _(self, ctx, "OWNER"),
-                                   await _(self, ctx, "PICTURE")])
+                    fin.insert(0, [await _(ctx, "ID"),
+                                   await _(ctx, "COST"),
+                                   await _(ctx, "ITEM"),
+                                   await _(ctx, "OWNER"),
+                                   await _(ctx, "PICTURE")])
                     embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
                     await msg.edit(embed=embed)
@@ -295,11 +295,11 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
                            zip(chunks[i], users)]
-                    fin.insert(0, [await _(self, ctx, "ID"),
-                                   await _(self, ctx, "COST"),
-                                   await _(self, ctx, "ITEM"),
-                                   await _(self, ctx, "OWNER"),
-                                   await _(self, ctx, "PICTURE")])
+                    fin.insert(0, [await _(ctx, "ID"),
+                                   await _(ctx, "COST"),
+                                   await _(ctx, "ITEM"),
+                                   await _(ctx, "OWNER"),
+                                   await _(ctx, "PICTURE")])
                     embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
                     await msg.edit(embed=embed)
