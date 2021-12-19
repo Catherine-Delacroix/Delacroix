@@ -49,6 +49,20 @@ class Delacroix(commands.Cog):
         # Your code will go here
         await ctx.send("I can do stuff!")
 
+#    async def _(self, ctx, translation):
+#        currency = ":spankme:"
+#        if ctx.guild is not None:
+#            gd = await self.config.guild(ctx.guild)
+#            lang = gd.get("lang", "en")
+#            currency = gd.get("currency") or currency
+#            if lang != "en":
+#                try:
+#                    translation = ctx.bot.translations[translation][lang]
+#                except:
+#                    pass
+#
+#        return translation.replace("dollars", currency)
+
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
         """Check your or another users :spankme: """
