@@ -172,9 +172,9 @@ class Delacroix(commands.Cog):
         """View the current auction listings"""
         um = await self.config.guild(ctx.guild).market()
         market = list(um.values())
-        #desc = """\u27A1 to see the next page
-        #            \n\u2B05 to go back
-        #            \n\u274C to exit"""
+        desc = """\u27A1 to see the next page
+                    \n\u2B05 to go back
+                    \n\u274C to exit"""
 
         if not market:
             await ctx.send("No items on the market to display.")
