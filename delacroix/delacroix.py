@@ -260,13 +260,13 @@ class Delacroix(commands.Cog):
                 continue
 
             if r.emoji == emotes[0]:
-                if i == 0:
+                #if i == 0:
+                #    pass
+                #else:
+                i -= 1
+                if i < 0:
+                    i = max
                     pass
-                else:
-                    i -= 1
-                    if i < 0:
-                        i = max
-                        pass
                     embed.clear_fields()
                     print("i = "+str(i))
                     print("max = "+str(max))
