@@ -20,12 +20,11 @@ from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, creat
 async def _(ctx, translation):
     currency = ":spankme:"
     if ctx.guild is not None:
-        gd = await self.config.guild(ctx.guild)
-        lang = gd.get("lang", "en")
-        currency = gd.get("currency") or currency
+        #gd = await self.config.guild(ctx.guild)
+        lang = "en"
         if lang != "en":
             try:
-                translation = ctx.bot.translations[translation][lang]
+                currency = ":spankme:"
             except:
                 pass
 
