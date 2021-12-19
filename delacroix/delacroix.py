@@ -225,6 +225,7 @@ class Delacroix(commands.Cog):
                        await _(ctx, "ITEM"),
                        await _(ctx, "OWNER")])
         embed.description = "```\n{}\n```".format(format_table(fin))
+        print(image)
         embed.set_image(image)
         max = len(chunks) - 1
 
