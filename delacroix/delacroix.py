@@ -260,12 +260,13 @@ class Delacroix(commands.Cog):
                 continue
 
             if r.emoji == emotes[0]:
-                #if i == 0:
-                #    pass
-                #else:
-                i -= 1
-                if i < 0:
-                    i = max
+                if i == 0:
+                    pass
+                else:
+                    i -= 1
+                    if i < 0:
+                        i = max
+                        pass
                     embed.clear_fields()
                     print("i = "+str(i))
                     print("max = "+str(max))
@@ -289,7 +290,6 @@ class Delacroix(commands.Cog):
                     await msg.remove_reaction(emotes[0], u)
 
             elif r.emoji == emotes[1]:
-                i += 1
                 if i == max:
                     i = 0
                     pass
