@@ -224,11 +224,11 @@ class Delacroix(commands.Cog):
 
         fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y), f"x{x['picture']}"] for x, y in
                zip(chunks[i], users)]
-        fin.insert(0, [await (ctx, "ID"),
-                       await (ctx, "COST"),
-                       await (ctx, "ITEM"),
-                       await (ctx, "OWNER"),
-                       await (ctx, "PICTURE")])
+        fin.insert(0, [await _(ctx, "ID"),
+                       await _(ctx, "COST"),
+                       await _(ctx, "ITEM"),
+                       await _(ctx, "OWNER"),
+                       await _(ctx, "PICTURE")])
         embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
         max = len(chunks) - 1
@@ -263,11 +263,11 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
                            zip(chunks[i], users)]
-                    fin.insert(0, [await (ctx, "ID"),
-                                   await (ctx, "COST"),
-                                   await (ctx, "ITEM"),
-                                   await (ctx, "OWNER"),
-                                   await (ctx, "PICTURE")])
+                    fin.insert(0, [await _(ctx, "ID"),
+                                   await _(ctx, "COST"),
+                                   await _(ctx, "ITEM"),
+                                   await _(ctx, "OWNER"),
+                                   await _(ctx, "PICTURE")])
                     embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
                     await msg.edit(embed=embed)
@@ -281,11 +281,11 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
                            zip(chunks[i], users)]
-                    fin.insert(0, [await (ctx, "ID"),
-                                   await (ctx, "COST"),
-                                   await (ctx, "ITEM"),
-                                   await (ctx, "OWNER"),
-                                   await (ctx, "PICTURE")])
+                    fin.insert(0, [await _(ctx, "ID"),
+                                   await _(ctx, "COST"),
+                                   await _(ctx, "ITEM"),
+                                   await _(ctx, "OWNER"),
+                                   await _(ctx, "PICTURE")])
                     embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
                     await msg.edit(embed=embed)
