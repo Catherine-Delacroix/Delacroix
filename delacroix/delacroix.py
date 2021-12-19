@@ -17,7 +17,7 @@ from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, creat
 
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
 
-async def _(self, ctx, translation):
+async def _(ctx, translation):
     currency = ":spankme:"
     if ctx.guild is not None:
         gd = await self.config.guild(ctx.guild)
