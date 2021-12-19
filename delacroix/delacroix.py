@@ -206,7 +206,7 @@ class Delacroix(commands.Cog):
             for i in br:
                 del um[i]
             um.update(fr)
-#check for bugs here!!!!!!!!!!!!!!!!!!!!!
+
             #await self.config.guild(ctx.guild).market.set(um)
             market = list(um.items())
             chunks = []
@@ -261,12 +261,13 @@ class Delacroix(commands.Cog):
 
             if r.emoji == emotes[0]:
                 if i == 0:
-                    pass
-                else:
-                    i -= 1
-                    if i < 0:
-                        i = max
-                        pass
+                    i = max
+                #    pass
+                #else:
+                #    i -= 1
+                #    if i < 0:
+                #        i = max
+                #        pass
                     embed.clear_fields()
                     print("i = "+str(i))
                     print("max = "+str(max))
@@ -292,8 +293,8 @@ class Delacroix(commands.Cog):
             elif r.emoji == emotes[1]:
                 if i == max:
                     i = 0
-                    pass
-                else:
+                #    pass
+                #else:
                     embed.clear_fields()
                     i += 1
                     print("i = "+str(i))
