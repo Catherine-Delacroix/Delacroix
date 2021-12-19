@@ -12,7 +12,7 @@ from async_timeout import timeout
 
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
-#from .cogs.utils.translation import _
+from delacroix import _
 #from .cogs.utils import db
 
 
@@ -42,12 +42,6 @@ class Delacroix(commands.Cog):
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
         self.config.register_member(**default_member)
-
-    @commands.command()
-    async def mycom(self, ctx):
-        """This does stuff!"""
-        # Your code will go here
-        await ctx.send("I can do stuff!")
 
     async def _(self, ctx, translation):
         currency = ":spankme:"
