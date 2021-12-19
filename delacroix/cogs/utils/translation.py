@@ -35,10 +35,8 @@ async def _(ctx, translation):
 def format_table(lines, separate_head=True):
     """Prints a formatted table given a 2 dimensional array"""
     # Count the column width
-    print(lines)
     widths = []
     for line in lines:
-        print(line)
         for i, size in enumerate([len(x) for x in line]):
             while i >= len(widths):
                 widths.append(0)
