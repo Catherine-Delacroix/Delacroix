@@ -310,3 +310,8 @@ class Delacroix(commands.Cog):
             
         else:
             await ctx.send("Your bid isn't high enough")
+    @commands.command()
+    async def resetmarket(self, ctx):
+        empty = {}
+        await self.config.guild(ctx.guild).market.set(empty)
+        await ctx.send("Market cleared.")
