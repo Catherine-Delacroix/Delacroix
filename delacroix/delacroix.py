@@ -226,12 +226,12 @@ class Delacroix(commands.Cog):
                        await _(ctx, "OWNER")])
         #embed.description = "```\n{}\n```".format(format_table(fin))
         embed.set_thumbnail(url = image)
-        embed.add_field(name= fin[1][2])
+        embed.add_field(name= fin[0][2], value = fin[1][2])
         embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
         embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
         embed.set_image(url = image)
-        
+
         max = len(chunks) - 1
 
         msg = await ctx.send(embed=embed)
