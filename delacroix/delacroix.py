@@ -12,23 +12,10 @@ from async_timeout import timeout
 
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
-#from .cogs.utils import db
+from .cogs.utils.translation import _
 
 
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
-
-async def _(ctx, translation):
-    currency = ":spankme:"
-    if ctx.guild is not None:
-        #gd = await self.config.guild(ctx.guild)
-        lang = "en"
-        if lang != "en":
-            try:
-                currency = ":spankme:"
-            except:
-                pass
-
-    return translation.replace("dollars", currency)
 
 class Delacroix(commands.Cog):
     """My custom cog"""

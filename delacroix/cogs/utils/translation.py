@@ -18,18 +18,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-from redbot.core import Config
-from redbot.core import commands
 
 async def _(ctx, translation):
     currency = ":spankme:"
     if ctx.guild is not None:
-        gd = await self.config.guild(ctx.guild)
-        lang = gd.get("lang", "en")
-        currency = gd.get("currency") or currency
+        #gd = await self.config.guild(ctx.guild)
+        lang = "en"
         if lang != "en":
             try:
-                translation = ctx.bot.translations[translation][lang]
+                currency = ":spankme:"
             except:
                 pass
 
