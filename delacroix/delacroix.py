@@ -264,9 +264,7 @@ class Delacroix(commands.Cog):
                     pass
                 else:
                     i -= 1
-                    if i < 0:
-                        i = max
-                        pass
+                    embed.clear_fields()
                     print("i = "+str(i))
                     print("max = "+str(max))
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
