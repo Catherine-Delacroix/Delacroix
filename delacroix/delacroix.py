@@ -36,7 +36,7 @@ class Delacroix(commands.Cog):
             }
         }
         default_member = {
-            "balance":0
+            "balance":int(0)
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -46,7 +46,7 @@ class Delacroix(commands.Cog):
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
-        """Check your or another users :spankme: """
+        """Check your or another users Lewds """
 
         dest = ctx.channel
 
@@ -73,7 +73,7 @@ class Delacroix(commands.Cog):
 
         bal = await self.config.member(member).balance()
 
-        data = """Total:\t\t {:.2f} :spankme: """
+        data = """Total:\t\t {:.2f} Lewds """
 
         embed = discord.Embed(
             description=data.format(int(bal)),
@@ -87,7 +87,7 @@ class Delacroix(commands.Cog):
     @checks.mod_or_permissions()
     @commands.command(aliases=["setb"])
     async def setbalance(self, ctx, amount: NumberConverter, *members: MemberConverter):
-        """Set the :spankme: of the given members to an amount
+        """Set the Lewds of the given members to an amount
         Example: !setbalance 500 everyone
         Example: !setbalance 500 @Henry#6174 @JohnDoe#0001
         Requires Bot Moderator or Bot Admin"""
@@ -102,7 +102,7 @@ class Delacroix(commands.Cog):
     @checks.mod_or_permissions()
     @commands.command()
     async def givemoney(self, ctx, amount: NumberConverter, *members: MemberConverter):
-        """Give the member's :spankme:
+        """Give the member's Lewds
         Example: !givemoney 5000 @Henry#6174 @JohnDoe#0001
         Example: !givemoney 50 everyone (or @\u200beveryone)
         Requires Bot Moderator or Bot Admin"""
@@ -113,12 +113,12 @@ class Delacroix(commands.Cog):
             final = amount + bal
             await self.config.member(member).balance.set(final)
 
-        await ctx.send(":spankme: given")
+        await ctx.send("Lewds given")
 
     @checks.mod_or_permissions()
     @commands.command()
     async def takemoney(self, ctx, amount: NumberConverter, *members: MemberConverter):
-        """Take the user's :spankme:
+        """Take the user's Lewds
         Example: !takemoney 5000 @Henry#6174
         Requires Bot Moderator or Bot Admin"""
         members = chain(members)
@@ -127,15 +127,15 @@ class Delacroix(commands.Cog):
             bal = await self.config.member(member).balance()
             final = bal - amount
             await self.config.member(member).balance.set(final)
-            await ctx.send(":spankme: taken")
+            await ctx.send("Lewds taken")
 
     @commands.command()
     async def pay(self, ctx, amount: NumberConverter, member: discord.Member):
-        """Pay another user :spankme:
+        """Pay another user Lewds
         Example: rp!pay 500 @Henry#6174"""
         if ctx.author.bot:
             await ctx.send(
-                await ("Bots don't have :spankme: to pay other people! Use !givemoney instead of !pay"))
+                await ("Bots don't have Lewds to pay other people! Use !givemoney instead of !pay"))
             return
         amount = abs(amount)
 
@@ -148,7 +148,7 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(member).balance()
         final = bal + amount
         await self.config.member(member).balance.set(final)
-        await ctx.send("Successfully paid {} :spankme: to {}").format(amount, member)
+        await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
 
     @commands.command(aliases=["createlisting", "new", "list"])
     async def create(self, ctx, item: str, cost: NumberConverter, *, picture: str):
@@ -215,7 +215,7 @@ class Delacroix(commands.Cog):
 
             users = get(ctx.guild.members, id=[x['user'] for x in chunks[i]])
 
-        currency = ":spankme:" #await ctx.bot.di.get_currency(ctx.guild)
+        currency = "Lewds" #await ctx.bot.di.get_currency(ctx.guild)
 
         fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y)] for x, y in
                zip(chunks[i], users)]
