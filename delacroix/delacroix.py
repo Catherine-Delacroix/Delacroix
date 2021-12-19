@@ -217,7 +217,7 @@ class Delacroix(commands.Cog):
 
         currency = ":spankme:" #await ctx.bot.di.get_currency(ctx.guild)
 
-        fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y), f"x{x['picture']}"] for x, y in
+        fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y)] for x, y in
                zip(chunks[i], users)]
         fin.insert(0, [await _(ctx, "ID"),
                        await _(ctx, "COST"),
@@ -255,7 +255,7 @@ class Delacroix(commands.Cog):
                 else:
                     i -= 1
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
-                    fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
+                    fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
                     fin.insert(0, [await _(ctx, "ID"),
                                    await _(ctx, "COST"),
@@ -272,7 +272,7 @@ class Delacroix(commands.Cog):
                     embed.clear_fields()
                     i += 1
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
-                    fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
+                    fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                            zip(chunks[i], users)]
                     fin.insert(0, [await _(ctx, "ID"),
                                    await _(ctx, "COST"),
