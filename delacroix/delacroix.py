@@ -12,11 +12,24 @@ from async_timeout import timeout
 
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
-from delacroix import _
 #from .cogs.utils import db
 
 
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
+
+async def _(self, ctx, translation):
+    currency = ":spankme:"
+    if ctx.guild is not None:
+        gd = await self.config.guild(ctx.guild)
+        lang = gd.get("lang", "en")
+        currency = gd.get("currency") or currency
+        if lang != "en":
+            try:
+                translation = ctx.bot.translations[translation][lang]
+            except:
+                pass
+
+    return translation.replace("dollars", currency)
 
 class Delacroix(commands.Cog):
     """My custom cog"""
@@ -43,19 +56,7 @@ class Delacroix(commands.Cog):
         self.config.register_guild(**default_guild)
         self.config.register_member(**default_member)
 
-    async def _(self, ctx, translation):
-        currency = ":spankme:"
-        if ctx.guild is not None:
-            gd = await self.config.guild(ctx.guild)
-            lang = gd.get("lang", "en")
-            currency = gd.get("currency") or currency
-            if lang != "en":
-                try:
-                    translation = ctx.bot.translations[translation][lang]
-                except:
-                    pass
 
-        return translation.replace("dollars", currency)
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
