@@ -12,7 +12,7 @@ from async_timeout import timeout
 
 from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
-#from .cogs.utils.translation import _
+from .cogs.utils.translation import _
 #from .cogs.utils import db
 
 
