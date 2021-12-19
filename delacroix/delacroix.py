@@ -266,56 +266,57 @@ class Delacroix(commands.Cog):
                 i -= 1
                 if i < 0:
                     i = max
-                    embed.clear_fields()
-                    print("i = "+str(i))
-                    print("max = "+str(max))
-                    users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
-                    fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
-                           zip(chunks[i], users)]
-                    image = [[x['picture']] for x , y in zip(chunks[i], users)][0][0]
-                    fin.insert(0, [await _(ctx, "ID"),
-                                   await _(ctx, "COST"),
-                                   await _(ctx, "ITEM"),
-                                   await _(ctx, "OWNER")])
-                    #embed.description = "```\n{}\n```".format(format_table(fin))
-                    embed.set_thumbnail(url = image)
-                    embed.add_field(name= fin[1][2], value = fin[1][2])
-                    embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
-                    embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
-                    embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
-                    embed.set_image(url = image)
+                embed.clear_fields()
+                print("i = "+str(i))
+                print("max = "+str(max))
+                users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
+                fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
+                        zip(chunks[i], users)]
+                image = [[x['picture']] for x , y in zip(chunks[i], users)][0][0]
+                fin.insert(0, [await _(ctx, "ID"),
+                                await _(ctx, "COST"),
+                                await _(ctx, "ITEM"),
+                                await _(ctx, "OWNER")])
+                #embed.description = "```\n{}\n```".format(format_table(fin))
+                embed.set_thumbnail(url = image)
+                embed.add_field(name= fin[1][2], value = fin[1][2])
+                embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
+                embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
+                embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
+                embed.set_image(url = image)
 
-                    await msg.edit(embed=embed)
-                    await msg.remove_reaction(emotes[0], u)
+                await msg.edit(embed=embed)
+                await msg.remove_reaction(emotes[0], u)
 
             elif r.emoji == emotes[1]:
-                if i == max:
+                i += 1
+                if i > max:
                     i = 0
-                    pass
-                else:
-                    embed.clear_fields()
-                    i += 1
-                    print("i = "+str(i))
-                    print("max = "+str(max))
-                    users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
-                    fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
-                           zip(chunks[i], users)]
-                    image = [[x['picture']] for x , y in zip(chunks[i], users)][0][0]
-                    fin.insert(0, [await _(ctx, "ID"),
-                                   await _(ctx, "COST"),
-                                   await _(ctx, "ITEM"),
-                                   await _(ctx, "OWNER")])
-                    #embed.description = "```\n{}\n```".format(format_table(fin))
-                    embed.set_thumbnail(url = image)
-                    embed.add_field(name= fin[1][2], value = fin[1][2])
-                    embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
-                    embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
-                    embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
-                    embed.set_image(url = image)
-                    embed.set_image(url = image)
+                 #   pass
+                #else:
+                embed.clear_fields()
+                i += 1
+                print("i = "+str(i))
+                print("max = "+str(max))
+                users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
+                fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
+                        zip(chunks[i], users)]
+                image = [[x['picture']] for x , y in zip(chunks[i], users)][0][0]
+                fin.insert(0, [await _(ctx, "ID"),
+                                await _(ctx, "COST"),
+                                await _(ctx, "ITEM"),
+                                await _(ctx, "OWNER")])
+                #embed.description = "```\n{}\n```".format(format_table(fin))
+                embed.set_thumbnail(url = image)
+                embed.add_field(name= fin[1][2], value = fin[1][2])
+                embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
+                embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
+                embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
+                embed.set_image(url = image)
+                embed.set_image(url = image)
 
-                    await msg.edit(embed=embed)
-                    await msg.remove_reaction(emotes[1], u)
+                await msg.edit(embed=embed)
+                await msg.remove_reaction(emotes[1], u)
             else:
                 await msg.delete()
                 #await ctx.send("Closing")
