@@ -222,8 +222,7 @@ class Delacroix(commands.Cog):
         fin.insert(0, [await _(ctx, "ID"),
                        await _(ctx, "COST"),
                        await _(ctx, "ITEM"),
-                       await _(ctx, "OWNER"),
-                       await _(ctx, "PICTURE")])
+                       await _(ctx, "OWNER")])
         embed.description = "```\n{}\n```".format(format_table(fin))
 
         max = len(chunks) - 1
@@ -261,8 +260,7 @@ class Delacroix(commands.Cog):
                     fin.insert(0, [await _(ctx, "ID"),
                                    await _(ctx, "COST"),
                                    await _(ctx, "ITEM"),
-                                   await _(ctx, "OWNER"),
-                                   await _(ctx, "PICTURE")])
+                                   await _(ctx, "OWNER")])
                     embed.description = "```\n{}\n```".format(format_table(fin))
 
                     await msg.edit(embed=embed)
@@ -279,8 +277,7 @@ class Delacroix(commands.Cog):
                     fin.insert(0, [await _(ctx, "ID"),
                                    await _(ctx, "COST"),
                                    await _(ctx, "ITEM"),
-                                   await _(ctx, "OWNER"),
-                                   await _(ctx, "PICTURE")])
+                                   await _(ctx, "OWNER")])
                     embed.description = "```\n{}\n```".format(format_table(fin))
 
                     await msg.edit(embed=embed)
