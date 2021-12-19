@@ -73,7 +73,7 @@ class Delacroix(commands.Cog):
 
         bal = await self.config.member(member).balance()
 
-        data = """Total:\t\t {} """
+        data = """Total:\t\t {} Lewds"""
 
         embed = discord.Embed(
             description=data.format(int(bal)),
@@ -266,6 +266,7 @@ class Delacroix(commands.Cog):
                     i -= 1
                     if i < 0:
                         i = max
+                        pass
                     embed.clear_fields()
                     print("i = "+str(i))
                     print("max = "+str(max))
@@ -286,6 +287,7 @@ class Delacroix(commands.Cog):
                     embed.set_image(url = image)
 
                     await msg.edit(embed=embed)
+                    await msg.remove_reaction(emotes[0], u)
 
             elif r.emoji == emotes[1]:
                 if i == max:
@@ -314,6 +316,7 @@ class Delacroix(commands.Cog):
                     embed.set_image(url = image)
 
                     await msg.edit(embed=embed)
+                    await msg.remove_reaction(emotes[1], u)
             else:
                 await msg.delete()
                 #await ctx.send("Closing")
