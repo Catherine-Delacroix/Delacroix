@@ -264,7 +264,8 @@ class Delacroix(commands.Cog):
                     pass
                 else:
                     i -= 1
-                    if
+                    if i < 0:
+                        i = max
                     embed.clear_fields()
                     print("i = "+str(i))
                     print("max = "+str(max))
