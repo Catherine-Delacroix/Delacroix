@@ -219,7 +219,7 @@ class Delacroix(commands.Cog):
 
         fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y)] for x, y in
                zip(chunks[i], users)]
-        image = [[x['picture']] for x , y in zip(chunks[i], users)]
+        image = [[x['picture']] for x , y in zip(chunks[i], users)][0][0]
         fin.insert(0, [await _(ctx, "ID"),
                        await _(ctx, "COST"),
                        await _(ctx, "ITEM"),
