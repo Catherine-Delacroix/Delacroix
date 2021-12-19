@@ -27,8 +27,15 @@ class Delacroix(commands.Cog):
         self.config = Config.get_conf(self, identifier=1234567890)
         default_global = {}
         default_guild = { 
-            "balances": {} 
+            "market": {
+            #    "id": {
+            #        "item":"",
+            #        "cost":0,
+            #        "picture":"",
+            #        "duration":0,
+            #    }
             }
+        }
         default_member = {
             "balance":0
         }
@@ -154,39 +161,32 @@ class Delacroix(commands.Cog):
          This is used to buy the item later.
         Example: !list Goddess 500 pictureurl"""
         cost = abs(cost)
-        market = await self.bot.di.get_guild_market(ctx.guild)
-
-#        async with self.bot.di.rm.lock(ctx.author.id):
-#            try:
-#                await self.bot.di.take_items(ctx.author, (item, amount))
-#            except ValueError:
-#                await ctx.send(await _(ctx, "You don't have enough of these to sell!"))
-#                return
+        market = await self.config.guild(ctx.guild).market()
 
         id = self.bot.randsample()
         market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture)
 
-        async with self.bot.di.rm.lock(ctx.guild.id):
-            await self.bot.di.update_guild_market(ctx.guild, market)
+        #async with self.bot.di.rm.lock(ctx.guild.id):
+        #    await self.bot.di.update_guild_market(ctx.guild, market)
+        await self.config.guild(ctx.guild).market.set(market)
 
-        await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
+        await ctx.send((await (ctx, "Item listed with ID {}")).format(id))
 
     @commands.group(aliases=["m", "auction"], invoke_without_command=True)
     async def market(self, ctx):
         """View the current auction listings"""
-        um = await self.bot.di.get_guild_market(ctx.guild)
+        um = await self.config.guild(ctx.guild).market()
         market = list(um.values())
-        desc = await _(ctx,
-                       "\u27A1 to see the next page"
-                       "\n\u2B05 to go back"
-                       "\n\u274C to exit"
-                       )
+        desc = """\u27A1 to see the next page
+                    \n\u2B05 to go back
+                    \n\u274C to exit"""
+
         if not market:
-            await ctx.send(await _(ctx, "No items on the market to display."))
+            await ctx.send("No items on the market to display.")
             return
 
         emotes = ("\u2B05", "\u27A1", "\u274C")
-        embed = discord.Embed(description=desc, title=await _(ctx, "Player Market"), color=randint(0, 0xFFFFFF), )
+        embed = discord.Embed(description=desc, title="User Market", color=randint(0, 0xFFFFFF), )
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 
         chunks = []
@@ -211,8 +211,8 @@ class Delacroix(commands.Cog):
             for i in br:
                 del um[i]
             um.update(fr)
-
-            await self.bot.di.update_guild_market(ctx.guild, um)
+#check for bugs here!!!!!!!!!!!!!!!!!!!!!
+            await self.config.guild(ctx.guild).market.set(um)
             market = list(um.items())
             chunks = []
             for i in range(0, len(market), clen):
@@ -220,15 +220,15 @@ class Delacroix(commands.Cog):
 
             users = get(ctx.guild.members, id=[x['user'] for x in chunks[i]])
 
-        currency = await ctx.bot.di.get_currency(ctx.guild)
+        currency = ":spankme:" #await ctx.bot.di.get_currency(ctx.guild)
 
         fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y), f"x{x['picture']}"] for x, y in
                zip(chunks[i], users)]
-        fin.insert(0, [await _(ctx, "ID"),
-                       await _(ctx, "COST"),
-                       await _(ctx, "ITEM"),
-                       await _(ctx, "OWNER"),
-                       await _(ctx, "PICTURE")])
+        fin.insert(0, [await (ctx, "ID"),
+                       await (ctx, "COST"),
+                       await (ctx, "ITEM"),
+                       await (ctx, "OWNER"),
+                       await (ctx, "PICTURE")])
         embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
         max = len(chunks) - 1
@@ -241,7 +241,7 @@ class Delacroix(commands.Cog):
             try:
                 r, u = await self.bot.wait_for("reaction_add", check=lambda r, u: r.message.id == msg.id, timeout=80)
             except asyncio.TimeoutError:
-                await ctx.send(await _(ctx, "Timed out! Try again"))
+                await ctx.send("Timed out! Try again")
                 await msg.delete()
                 return
 
@@ -263,11 +263,11 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
                            zip(chunks[i], users)]
-                    fin.insert(0, [await _(ctx, "ID"),
-                                   await _(ctx, "COST"),
-                                   await _(ctx, "ITEM"),
-                                   await _(ctx, "OWNER"),
-                                   await _(ctx, "PICTURE")])
+                    fin.insert(0, [await (ctx, "ID"),
+                                   await (ctx, "COST"),
+                                   await (ctx, "ITEM"),
+                                   await (ctx, "OWNER"),
+                                   await (ctx, "PICTURE")])
                     embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
                     await msg.edit(embed=embed)
@@ -281,11 +281,11 @@ class Delacroix(commands.Cog):
                     users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                     fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y), f"x{x['picture']}"] for x, y in
                            zip(chunks[i], users)]
-                    fin.insert(0, [await _(ctx, "ID"),
-                                   await _(ctx, "COST"),
-                                   await _(ctx, "ITEM"),
-                                   await _(ctx, "OWNER"),
-                                   await _(ctx, "PICTURE")])
+                    fin.insert(0, [await (ctx, "ID"),
+                                   await (ctx, "COST"),
+                                   await (ctx, "ITEM"),
+                                   await (ctx, "OWNER"),
+                                   await (ctx, "PICTURE")])
                     embed.description = "```\n{}\n```".format(self.bot.format_table(fin))
 
                     await msg.edit(embed=embed)
@@ -302,16 +302,16 @@ class Delacroix(commands.Cog):
     @commands.command()
     async def bid(self, ctx, id:str, cost: NumberConverter):
         """Place a bid on a item at the auction. Example: !bid Goddess 500"""
-        async with self.bot.di.rm.lock(ctx.guild.id):
-            market = await self.bot.di.get_guild_market(ctx.guild)
-            item = market.pop(id)
-        bal = await ctx.bot.di.get_all_balances(ctx.author)
+        market = await self.config.guild(ctx.guild).market()
+        item = market[id]
+        bal = await self.config.member(ctx.author).balance()
         if bal > item['cost']:
             market[id]['cost'] = cost
-            market[id]['user']
-            async with self.bot.di.rm.lock(ctx.guild.id):
-                await self.bot.di.update_guild_market(ctx.guild, market)
-            await ctx.send(await _(ctx, "Your bid was successful. Good luck."))
+            market[id]['user'] = ctx.author
+            #async with self.bot.di.rm.lock(ctx.guild.id):
+            #    await self.bot.di.update_guild_market(ctx.guild, market)
+            await self.config.guild(ctx.guild).market.set(market)
+            await ctx.send("Your bid was successful. Good luck.")
             
         else:
-            await ctx.send(await _(ctx, "Your bid isn't high enough"))
+            await ctx.send("Your bid isn't high enough")
