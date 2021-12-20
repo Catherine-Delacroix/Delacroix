@@ -346,7 +346,7 @@ class Delacroix(commands.Cog):
     
     @checks.mod_or_permissions()
     @commands.command()
-    async def setauctionchannel(self, ctx, channel):
+    async def setauctionchannel(self, ctx, channel:discord.TextChannel):
         #auctionchannel = await self.config.guild(ctx.guild).auctionchannel()
         auctionchannel = {'channel': channel.id}
         await self.config.guild(ctx.guild).auctionchannel.set(auctionchannel)
