@@ -189,7 +189,7 @@ class Delacroix(commands.Cog):
         embed.add_field(name='OWNER', value=f"<@{market[id]['user']}>", inline=True)
         embed.add_field(name='COST', value=market[id]['cost'], inline=True)
         embed.set_image(url = market[id]['picture'])
-        footer = "Expires {}".format(expiration)
+        footer = "Expires {} UTC".format(expiration)
         embed.set_footer(text=footer)
 
         message = await channel.send(embed = embed)
@@ -265,7 +265,7 @@ class Delacroix(commands.Cog):
         embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
         embed.add_field(name= fin[0][4], value = fin[1][4])
-        footer = "Expires {}".format(fin[1][5])
+        footer = "Expires {} UTC".format(fin[1][5])
         embed.set_footer(text=footer)
         embed.set_image(url = image)
 
@@ -317,7 +317,7 @@ class Delacroix(commands.Cog):
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
                 embed.add_field(name= fin[0][4], value = fin[1][4])
-                footer = "Expires {}".format(fin[1][5])
+                footer = "Expires {} UTC".format(fin[1][5])
                 embed.set_footer(text=footer)
                 embed.set_image(url = image)
 
@@ -347,7 +347,7 @@ class Delacroix(commands.Cog):
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
                 embed.add_field(name= fin[0][4], value = fin[1][4])
-                footer = "Expires {}".format(fin[1][5])
+                footer = "Expires {} UTC".format(fin[1][5])
                 embed.set_footer(text=footer)
                 embed.set_image(url = image)
 
