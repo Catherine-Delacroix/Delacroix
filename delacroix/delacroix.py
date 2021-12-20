@@ -351,8 +351,7 @@ class Delacroix(commands.Cog):
             embed['COST'] = cost
             embed['OWNER'] = ctx.author.id
             embed = discord.Embed.from_dict(embed)
-            print(embed)
-            await msg.edit(embed[0])
+            await msg.edit(embeds=embed)
         else:
             await ctx.send("Your bid isn't high enough or you don't have the funds.")
 
