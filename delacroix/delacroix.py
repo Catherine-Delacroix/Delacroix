@@ -189,7 +189,8 @@ class Delacroix(commands.Cog):
         embed.add_field(name='OWNER', value=market[id]['user'].display_name, inline=True)
         embed.add_field(name='COST', value=market[id]['cost'], inline=True)
         embed.set_image(url = market[id]['picture'])
-        embed.set_footer(text="Expires {}").format(expiration)
+        footer = "Expires {}".format(expiration)
+        embed.set_footer(text=footer)
 
         message = await channel.send(embed = embed)
         market[id]['message'] = message.id
@@ -264,7 +265,8 @@ class Delacroix(commands.Cog):
         embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
         embed.add_field(name= fin[0][4], value = fin[1][4])
-        embed.set_footer(text="Expires {}").format(fin[1][5])
+        footer = "Expires {}".format(fin[1][5])
+        embed.set_footer(text=footer)
         embed.set_image(url = image)
 
         max = len(chunks) - 1
@@ -315,7 +317,8 @@ class Delacroix(commands.Cog):
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
                 embed.add_field(name= fin[0][4], value = fin[1][4])
-                embed.set_footer(text="Expires {}").format(fin[1][5])
+                footer = "Expires {}".format(fin[1][5])
+                embed.set_footer(text=footer)
                 embed.set_image(url = image)
 
                 await msg.edit(embed=embed)
@@ -344,7 +347,8 @@ class Delacroix(commands.Cog):
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
                 embed.add_field(name= fin[0][4], value = fin[1][4])
-                embed.set_footer(text="Expires {}").format(fin[1][5])
+                footer = "Expires {}".format(fin[1][5])
+                embed.set_footer(text=footer)
                 embed.set_image(url = image)
 
                 await msg.edit(embed=embed)
