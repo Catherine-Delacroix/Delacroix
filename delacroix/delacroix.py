@@ -246,7 +246,7 @@ class Delacroix(commands.Cog):
                 r, u = await self.bot.wait_for("reaction_add", check=lambda r, u: r.message.id == msg.id, timeout=80)
             except asyncio.TimeoutError:
                 #await ctx.send("Timed out! Try again")
-                await msg.delete()
+                #await msg.delete()
                 return
 
             if u == ctx.guild.me:
