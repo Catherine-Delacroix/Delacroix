@@ -329,6 +329,7 @@ class Delacroix(commands.Cog):
     async def bid(self, ctx, id:str, cost: NumberConverter):
         """Place a bid on a item at the auction. Example: !bid Goddess 500"""
         market = await self.config.guild(ctx.guild).market()
+        print(market)
         item = market[id]
         bal = await self.config.member(ctx.author).balance()
         if bal > item['cost']:
@@ -336,11 +337,13 @@ class Delacroix(commands.Cog):
             market[id]['user'] = ctx.author
             #async with self.bot.di.rm.lock(ctx.guild.id):
             #    await self.bot.di.update_guild_market(ctx.guild, market)
+            print(market)
             await self.config.guild(ctx.guild).market.set(market)
             await ctx.send("Your bid was successful. Good luck.")
             
         else:
-            await ctx.send("Your bid isn't high enough")
+            await ctx.send("Your bid isn't high enough or you don't have the funds.")
+
     @commands.command()
     async def resetmarket(self, ctx):
         empty = {}
