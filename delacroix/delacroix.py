@@ -311,7 +311,6 @@ class Delacroix(commands.Cog):
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
                 embed.set_image(url = image)
-                embed.set_image(url = image)
 
                 await msg.edit(embed=embed)
                 await msg.remove_reaction(emotes[1], u)
@@ -328,17 +327,15 @@ class Delacroix(commands.Cog):
     @commands.command()
     async def bid(self, ctx, id:str, cost: NumberConverter):
         """Place a bid on a item at the auction. Example: !bid Goddess 500"""
-        market = await self.config.guild(ctx.guild).market()
-        print(market)
-        item = market[id]
+        item = await self.config.guild(ctx.guild).market(id)
+        print(item)
+        #item = market[id]
         bal = await self.config.member(ctx.author).balance()
         if bal > item['cost']:
-            market[id]['cost'] = cost
-            market[id]['user'] = ctx.author
-            #async with self.bot.di.rm.lock(ctx.guild.id):
-            #    await self.bot.di.update_guild_market(ctx.guild, market)
-            print(market)
-            await self.config.guild(ctx.guild).market.set(market)
+            item['cost'] = cost
+            item['user'] = ctx.author
+            print(irwm)
+            await self.config.guild(ctx.guild).market.set(item)
             await ctx.send("Your bid was successful. Good luck.")
             
         else:
