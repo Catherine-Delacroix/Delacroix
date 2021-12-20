@@ -160,7 +160,7 @@ class Delacroix(commands.Cog):
         #print(channel)
 
         embed = discord.Embed(description="", title=market[id]['item'])
-        embed.set_author(name=market[id]['user'])
+        #embed.set_author(name=market[id]['user'])
         embed.set_thumbnail(url=market[id]['picture'])
         embed.add_field(name='ID', value=market[id]['id'], inline=True)
         embed.add_field(name='NAME', value=market[id]['item'], inline=True)
