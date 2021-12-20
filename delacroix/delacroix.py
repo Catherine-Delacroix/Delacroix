@@ -56,8 +56,8 @@ class Delacroix(commands.Cog):
                 print(id)
                 date = datetime.datetime.utcnow()
                 print(date)
-                expire = id['expiration']#datetime.strptime(id['expiration'], "%Y-%m-%d %H:%M:%S.%f")
-                print(expire[0])
+                expire = datetime.strptime(market[id]['expiration'], "%Y-%m-%d %H:%M:%S.%f")
+                print(expire)
                 if expire[0] < date:
                     print("TRYING TO UPDATE")
                     msg = await channel.get_partial_message(id['message'])
