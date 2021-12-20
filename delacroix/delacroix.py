@@ -344,9 +344,10 @@ class Delacroix(commands.Cog):
         await self.config.guild(ctx.guild).market.set(empty)
         await ctx.send("Market cleared.")
     
+    @checks.mod_or_permissions()
     @commands.command()
     async def setauctionchannel(self, ctx, channel):
-        auctionchannel = self.config.guild(ctx.guild).auctionchannel()
-        auctionchannel = {'channel': channel}
+        #auctionchannel = await self.config.guild(ctx.guild).auctionchannel()
+        auctionchannel = {'channel': channel.id}
         await self.config.guild(ctx.guild).auctionchannel.set(auctionchannel)
         await ctx.send("Channel set successfully.")
