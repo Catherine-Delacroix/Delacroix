@@ -63,6 +63,8 @@ class Delacroix(commands.Cog):
                     msg = await channel.get_partial_message(id['message'])
                     await msg.delete(msg)
                     await channel.send("{} has won {} for {} cash").format(id['user'].id, id['item'], id['cost'])
+                    marketnoid = market.pop(id)
+                    await self.config.guild(guild).market(id).set(marketnoid)
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
