@@ -261,14 +261,11 @@ class Delacroix(commands.Cog):
 
             if r.emoji == emotes[0]:
                 if i == 0:
-                    i = max
-                #    pass
-                #else:
-                #    if i < 0:
-                #        i = max
-                #        pass
+                    i = max#+1
+                    #i -= 1
+                else:
+                    i -=1
                 embed.clear_fields()
-                i -= 1
                 print("i = "+str(i))
                 print("max = "+str(max))
                 users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
@@ -292,11 +289,11 @@ class Delacroix(commands.Cog):
 
             elif r.emoji == emotes[1]:
                 if i == max:
-                    i = -1
-                #    pass
-                #else:
+                    i = 0#-1
+                    #i += 1
+                else:
+                    i += 1
                 embed.clear_fields()
-                i += 1
                 print("i = "+str(i))
                 print("max = "+str(max))
                 users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
