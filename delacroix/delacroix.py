@@ -7,6 +7,7 @@ import json
 from recordclass import recordclass
 
 import discord
+import datetime
 from async_timeout import timeout
 #from discord.ext import commands
 
@@ -14,7 +15,7 @@ from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _, format_table
 
-
+guildlist = []
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
 
 class Delacroix(commands.Cog):
@@ -37,6 +38,24 @@ class Delacroix(commands.Cog):
         self.config.register_member(**default_member)
 
 
+    @tasks.loop(minutes=60)
+    async def auctionchecks(self, ctx):
+        for guild in guildlist:
+            market = await self.config.guild(guild).market()
+            channel = await self.config.guild(guild).auctionchannel()
+            channel = guild.get_channel(channel['channel'])
+            for id in market:
+                date = datetime.datetime.utcnow()
+                expire = id['expiration']
+                if expire < date:
+                    msg = await channel.get_partial_message(id['message'])
+                    await msg.delete(msg)
+                    await channel.send("{} has won {} for {} cash").format(id['user'].id, id['item'], id['cost'])
+
+    @commands.command()
+    async def getguild(self, ctx):
+        guildlist = [ctx.guild]
+        await ctx.send(ctx.guild)
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
@@ -145,16 +164,17 @@ class Delacroix(commands.Cog):
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
 
     @commands.command(aliases=["createlisting", "new", "list"])
-    async def create(self, ctx, item: str, cost: NumberConverter, picture: str, *,description: str):
+    async def create(self, ctx, item: str, cost: NumberConverter, picture: str, expires_in, *,description: str):
         """Create a new auction listing. The listing will return a unique identifier for the item.
          This is used to buy the item later.
         Example: !list item 500 pictureurl"""
         #try:
         cost = abs(cost)
         market = await self.config.guild(ctx.guild).market()
+        expiration = datetime.datetime.now() + datetime.timedelta(hours=expires_in)
 
         id = str(randint(1000,9999))
-        market[id] = dict(id=id, item=item, user=ctx.author.display_name, cost=cost, picture=picture, description=description)
+        market[id] = dict(id=id, item=item, user=ctx.author, cost=cost, picture=picture, description=description, expiration=expiration)
 
         channel = await self.config.guild(ctx.guild).auctionchannel()
         channel = ctx.guild.get_channel(channel['channel'])
@@ -165,9 +185,10 @@ class Delacroix(commands.Cog):
         embed.set_thumbnail(url=market[id]['picture'])
         embed.add_field(name='ID', value=market[id]['id'], inline=True)
         #embed.add_field(name='NAME', value=market[id]['item'], inline=True)
-        embed.add_field(name='OWNER', value=market[id]['user'], inline=True)
+        embed.add_field(name='OWNER', value=market[id]['user'].display_name, inline=True)
         embed.add_field(name='COST', value=market[id]['cost'], inline=True)
         embed.set_image(url = market[id]['picture'])
+        embed.set_footer(text="Expires {}").format(expiration)
 
         message = await channel.send(embed = embed)
         market[id]['message'] = message.id
@@ -242,6 +263,7 @@ class Delacroix(commands.Cog):
         embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
         embed.add_field(name= fin[0][4], value = fin[1][4])
+        embed.set_footer(text="Expires {}").format(fin[1][5])
         embed.set_image(url = image)
 
         max = len(chunks) - 1
@@ -292,6 +314,7 @@ class Delacroix(commands.Cog):
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
                 embed.add_field(name= fin[0][4], value = fin[1][4])
+                embed.set_footer(text="Expires {}").format(fin[1][5])
                 embed.set_image(url = image)
 
                 await msg.edit(embed=embed)
@@ -320,6 +343,7 @@ class Delacroix(commands.Cog):
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
                 embed.add_field(name= fin[0][4], value = fin[1][4])
+                embed.set_footer(text="Expires {}").format(fin[1][5])
                 embed.set_image(url = image)
 
                 await msg.edit(embed=embed)
@@ -342,7 +366,7 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(ctx.author).balance()
         channel = await self.config.guild(ctx.guild).auctionchannel()
         channel = ctx.guild.get_channel(channel['channel'])
-        msg = await channel.fetch_message(market[id]['message'])
+        msg = await channel.get_partial_message(market[id]['message'])
 
         if cost > market[id]['cost']:
             if bal < market[id]['cost']:
