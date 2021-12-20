@@ -47,7 +47,7 @@ class Delacroix(commands.Cog):
             channel = guild.get_channel(channel['channel'])
             for id in market:
                 date = datetime.datetime.utcnow()
-                expire = id['expiration']
+                expire = datetime.strptime(id['expiration'])
                 if expire < date:
                     msg = await channel.get_partial_message(id['message'])
                     await msg.delete(msg)
@@ -67,23 +67,12 @@ class Delacroix(commands.Cog):
         if member is None:
             member = ctx.author
 
-#        gd = await self.bot.get_guild_data(ctx.guild)
-        #balances = await self.config.member(ctx.author).balances()
-
         try:
             is_mod = checks.role_or_permissions(ctx,
                                                 lambda r: r.name in ('Bot Mod', 'Bot Admin', 'Bot Moderator'),
                                                 manage_server=True)
         except:
             is_mod = False
-
-        #hide = gd.get("hideinv", False)
-
-#        if not is_mod:
-#            member = ctx.author
-
-#        if hide:
-#            dest = ctx.author
 
         bal = await self.config.member(member).balance()
 
@@ -173,6 +162,7 @@ class Delacroix(commands.Cog):
         cost = abs(cost)
         market = await self.config.guild(ctx.guild).market()
         expiration = datetime.datetime.now() + datetime.timedelta(hours=expires_in)
+        expiration = str(expiration)
 
         id = str(randint(1000,9999))
         market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture, description=description, expiration=expiration)
