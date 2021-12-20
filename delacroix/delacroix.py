@@ -149,29 +149,29 @@ class Delacroix(commands.Cog):
         """Create a new auction listing. The listing will return a unique identifier for the item.
          This is used to buy the item later.
         Example: !list item 500 pictureurl"""
-        try:
-            cost = abs(cost)
-            market = await self.config.guild(ctx.guild).market()
+        #try:
+        cost = abs(cost)
+        market = await self.config.guild(ctx.guild).market()
 
-            id = str(randint(1000,9999))
-            market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture, description=description)
+        id = str(randint(1000,9999))
+        market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture, description=description)
 
-            channel = await self.config.guild(ctx.guild).auctionchannel()
-            channel = ctx.guild.get_channel(channel['channel'])
-            #print(channel)
+        channel = await self.config.guild(ctx.guild).auctionchannel()
+        channel = ctx.guild.get_channel(channel['channel'])
+        #print(channel)
 
-            embed = discord.Embed(description=description, title=market[id]['item'])
-            #embed.set_author(name=market[id]['user'])
-            embed.set_thumbnail(url=market[id]['picture'])
-            embed.add_field(name='ID', value=market[id]['id'], inline=True)
-            embed.add_field(name='NAME', value=market[id]['item'], inline=True)
-            embed.add_field(name='COST', value=market[id]['cost'], inline=True)
-            embed.set_image(url = market[id]['picture'])
+        embed = discord.Embed(description=description, title=market[id]['item'])
+        #embed.set_author(name=market[id]['user'])
+        embed.set_thumbnail(url=market[id]['picture'])
+        embed.add_field(name='ID', value=market[id]['id'], inline=True)
+        embed.add_field(name='NAME', value=market[id]['item'], inline=True)
+        embed.add_field(name='COST', value=market[id]['cost'], inline=True)
+        embed.set_image(url = market[id]['picture'])
 
-            message = await channel.send(embed = embed)
-            market[id]['message'].append(message)
-            await self.config.guild(ctx.guild).market.set(market)
-            await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
+        message = await channel.send(embed = embed)
+        market[id]['message'].append(message)
+        await self.config.guild(ctx.guild).market.set(market)
+        await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
         #except Exception:
         #    await ctx.send("Please check that you formatted the command correctly. Otherwise I'll spank you.")
 
