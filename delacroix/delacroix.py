@@ -326,7 +326,7 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(ctx.author).balance()
         if bal > market[id]['cost']:
             market[id]['cost'] = cost
-            market[id]['user'] = ctx.author
+            market[id]['user'] = ctx.author.name
             print(market)
             await self.config.guild(ctx.guild).market.set(market)
             await ctx.send("Your bid was successful. Good luck.")
