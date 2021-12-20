@@ -46,20 +46,20 @@ class Delacroix(commands.Cog):
         print("CHECKING FOR AUCTION COMPLETION \n \n")
         guildlist = self.bot.guilds
         for guild in guildlist:
-            print(guild + "\n")
+            print(guild)
             market = await self.config.guild(guild).market()
-            print(market + "\n")
+            print(market)
             channel = await self.config.guild(guild).auctionchannel()
             channel = guild.get_channel(channel['channel'])
-            print(channel + "\n")
+            print(channel)
             for id in market:
-                print(id + "\n")
+                print(id)
                 date = datetime.datetime.utcnow()
-                print(date + "\n")
+                print(date)
                 expire = datetime.strptime(id['expiration'])
-                print(expire + "\n")
+                print(expire)
                 if expire < date:
-                    print("TRYING TO UPDATE \n")
+                    print("TRYING TO UPDATE")
                     msg = await channel.get_partial_message(id['message'])
                     await msg.delete(msg)
                     await channel.send("{} has won {} for {} cash").format(id['user'].id, id['item'], id['cost'])
