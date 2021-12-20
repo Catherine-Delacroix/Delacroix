@@ -154,7 +154,7 @@ class Delacroix(commands.Cog):
         market = await self.config.guild(ctx.guild).market()
 
         id = str(randint(1000,9999))
-        market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture, description=description)
+        market[id] = dict(id=id, item=item, user=ctx.author.display_name, cost=cost, picture=picture, description=description)
 
         channel = await self.config.guild(ctx.guild).auctionchannel()
         channel = ctx.guild.get_channel(channel['channel'])
