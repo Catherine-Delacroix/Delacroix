@@ -166,11 +166,11 @@ class Delacroix(commands.Cog):
         id = str(randint(1000,9999))
         market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture)
 
-        channel = self.config.guild(ctx.guild).auctionchannel()['auctionchannel']
+        channel = self.config.guild(ctx.guild).auctionchannel()
 
         await self.config.guild(ctx.guild).market.set(market)
         await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
-        await send_to_auction_channel(channel, market[id])
+        await send_to_auction_channel(channel['auctionchannel'], market[id])
 
 
     @commands.group(aliases=["m", "auction"], invoke_without_command=True)
