@@ -41,7 +41,7 @@ class Delacroix(commands.Cog):
     def cog_unload(self):
         self.auctionchecks.cancel()
 
-    @tasks.loop(minutes=5)
+    @tasks.loop(minutes=60)
     async def auctionchecks(self):
         print("CHECKING FOR AUCTION COMPLETION \n \n")
         guildlist = self.bot.guilds
