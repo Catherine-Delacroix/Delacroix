@@ -165,7 +165,7 @@ class Delacroix(commands.Cog):
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
 
     @commands.command(aliases=["createlisting", "new", "list"])
-    async def create(self, ctx, item: str, cost: NumberConverter, picture: str, expires_in, *,description: str):
+    async def create(self, ctx, item: str, cost: NumberConverter, picture: str, expires_in: int, *,description: str):
         """Create a new auction listing. The listing will return a unique identifier for the item.
          This is used to buy the item later.
         Example: !list item 500 pictureurl"""
