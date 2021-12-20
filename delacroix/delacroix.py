@@ -175,7 +175,7 @@ class Delacroix(commands.Cog):
         expiration = datetime.datetime.now() + datetime.timedelta(hours=expires_in)
 
         id = str(randint(1000,9999))
-        market[id] = dict(id=id, item=item, user=ctx.author, cost=cost, picture=picture, description=description, expiration=expiration)
+        market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture, description=description, expiration=expiration)
 
         channel = await self.config.guild(ctx.guild).auctionchannel()
         channel = ctx.guild.get_channel(channel['channel'])
@@ -186,7 +186,7 @@ class Delacroix(commands.Cog):
         embed.set_thumbnail(url=market[id]['picture'])
         embed.add_field(name='ID', value=market[id]['id'], inline=True)
         #embed.add_field(name='NAME', value=market[id]['item'], inline=True)
-        embed.add_field(name='OWNER', value=market[id]['user'].display_name, inline=True)
+        embed.add_field(name='OWNER', value=f"<@{market[id]['user']}>", inline=True)
         embed.add_field(name='COST', value=market[id]['cost'], inline=True)
         embed.set_image(url = market[id]['picture'])
         footer = "Expires {}".format(expiration)
@@ -383,7 +383,7 @@ class Delacroix(commands.Cog):
                 await ctx.send("Your bid was successful. Good luck.")
                 
                 embed = msg.embeds[0]
-                embed.set_field_at(1, name="OWNER", value=market[id]['user'], inline=True)
+                embed.set_field_at(1, name="OWNER", value=f"<@{market[id]['user']}>", inline=True)
                 embed.set_field_at(2, name="COST", value=market[id]['cost'], inline=True)
                 await msg.edit(embed=embed)
         else:
