@@ -26,14 +26,8 @@ class Delacroix(commands.Cog):
         self.config = Config.get_conf(self, identifier=1234567890)
         default_global = {}
         default_guild = { 
-            "market": {
-            #    "id": {
-            #        "item":"",
-            #        "cost":0,
-            #        "picture":"",
-            #        "duration":0,
-            #    }
-            }
+            "market": {},
+            "auctionchannel":{}
         }
         default_member = {
             "balance":0
@@ -85,7 +79,7 @@ class Delacroix(commands.Cog):
         await dest.send(embed=embed)
 
     @checks.mod_or_permissions()
-    @commands.command(aliases=["setb"])
+    @commands.command(aliases=["setb", "setbal"])
     async def setbalance(self, ctx, amount: NumberConverter, *members: MemberConverter):
         """Set the Lewds of the given members to an amount
         Example: !setbalance 500 everyone
@@ -339,3 +333,8 @@ class Delacroix(commands.Cog):
         empty = {}
         await self.config.guild(ctx.guild).market.set(empty)
         await ctx.send("Market cleared.")
+    
+    @commands.command()
+    async def setauctionchannel(self, ctx, channel):
+        await self.config.guild(ctx.guild).auctionchannel.set(channel)
+        await ctx.send("Channel set successfully.")
