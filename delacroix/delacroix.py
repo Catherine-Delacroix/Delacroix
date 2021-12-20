@@ -58,11 +58,11 @@ class Delacroix(commands.Cog):
                 print(date)
                 expire = datetime.strptime(market[id]['expiration'], "%Y-%m-%d %H:%M:%S.%f")
                 print(expire)
-                if expire[0] < date:
+                if expire < date:
                     print("TRYING TO UPDATE")
-                    msg = await channel.get_partial_message(id['message'])
+                    msg = await channel.get_partial_message(market[id]['message'])
                     await msg.delete(msg)
-                    await channel.send("{} has won {} for {} cash").format(id['user'].id, id['item'], id['cost'])
+                    await channel.send("{} has won {} for {} cash").format(market[id]['user'].id, market[id]['item'], market[id]['cost'])
                     marketnoid = market.pop(id)
                     await self.config.guild(guild).market(id).set(marketnoid)
 
