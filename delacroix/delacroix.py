@@ -37,7 +37,11 @@ class Delacroix(commands.Cog):
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
         self.config.register_member(**default_member)
+        self.getguild
         self.auctionchecks.start()
+        
+    def cog_unload(self):
+        self.auctionchecks.cancel()
 
     @tasks.loop(minutes=5)
     async def auctionchecks(self):
@@ -64,7 +68,10 @@ class Delacroix(commands.Cog):
     @commands.command()
     async def getguild(self, ctx):
         guildlist = [ctx.guild]
-        await ctx.send(ctx.guild)
+        try:
+            await ctx.send(ctx.guild)
+        except:
+            pass
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
