@@ -60,7 +60,7 @@ class Delacroix(commands.Cog):
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
-        """Check your or another users balance """
+        """Check yours or another users balance """
 
         dest = ctx.channel
 
@@ -247,7 +247,8 @@ class Delacroix(commands.Cog):
                        await _(ctx, "COST"),
                        await _(ctx, "ITEM"),
                        await _(ctx, "OWNER"),
-                       await _(ctx, "DESCRIPTION")])
+                       await _(ctx, "DESCRIPTION"),
+                       await _(ctx, "EXPIRES")])
         #embed.description = "```\n{}\n```".format(format_table(fin))
         embed.set_thumbnail(url = image)
         embed.add_field(name= fin[0][2], value = fin[1][2])
