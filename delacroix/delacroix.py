@@ -340,8 +340,9 @@ class Delacroix(commands.Cog):
 
         market = await self.config.guild(ctx.guild).market()
         bal = await self.config.member(ctx.author).balance()
-        msg = await ctx.fetch_message(market[id]['message'])
         channel = await self.config.guild(ctx.guild).auctionchannel()
+        channel = ctx.guild.get_channel(channel['channel'])
+        msg = await channel.fetch_message(market[id]['message'])
 
         if cost > market[id]['cost']:
             if bal < market[id]['cost']:
@@ -355,7 +356,7 @@ class Delacroix(commands.Cog):
                 embed = msg.embeds[0]
                 embed.set_field_at(1, name="OWNER", value=market[id]['user'], inline=True)
                 embed.set_field_at(2, name="COST", value=market[id]['cost'], inline=True)
-                await channel.msg.edit(embed=embed)
+                await msg.edit(embed=embed)
         else:
             await ctx.send("Your bid isn't high enough.")
 
