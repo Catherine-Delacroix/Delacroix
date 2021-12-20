@@ -169,7 +169,7 @@ class Delacroix(commands.Cog):
         embed.set_image(url = market[id]['picture'])
 
         message = await channel.send(embed = embed)
-        market[id]['message'].append(message)
+        market[id]['message'] = message
         await self.config.guild(ctx.guild).market.set(market)
         await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
         #except Exception:
