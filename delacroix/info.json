@@ -1,1 +1,16 @@
-
+{
+    "name": "Delacroix",
+    "short": "Delacroix",
+    "description": "Catherine Delacroix's bot",
+    "end_user_data_statement": "This cog does not persistently store any data or metadata about users.",
+    "author": [
+        "Catherine Delacroix"
+    ],
+    "install_msg": "Long live Catherine Delacroix",
+    "requirements": ["datetime","discord.ext"],
+    "tags": [
+        "utility",
+    ],
+    "min_bot_version": "3.3.10",
+    "type": "COG"
+}
