@@ -164,7 +164,8 @@ class Delacroix(commands.Cog):
         #embed.set_author(name=market[id]['user'])
         embed.set_thumbnail(url=market[id]['picture'])
         embed.add_field(name='ID', value=market[id]['id'], inline=True)
-        embed.add_field(name='NAME', value=market[id]['item'], inline=True)
+        #embed.add_field(name='NAME', value=market[id]['item'], inline=True)
+        embed.add_field(name='OWNER', value=market[id]['user'], inline=True)
         embed.add_field(name='COST', value=market[id]['cost'], inline=True)
         embed.set_image(url = market[id]['picture'])
 
@@ -349,8 +350,8 @@ class Delacroix(commands.Cog):
             await ctx.send("Your bid was successful. Good luck.")
             
             embed = msg.embeds[0]
-            embed.set_field_at(2, name="COST", value=market[id]['cost'], inline=True)
-            #embed.set_field_at(3, name="OWNER", value=market[id]['user'], inline=True)
+            embed.set_field_at(2, name="OWNER", value=market[id]['user'], inline=True)
+            embed.set_field_at(3, name="COST", value=market[id]['cost'], inline=True)
             await msg.edit(embed=embed)
         else:
             await ctx.send("Your bid isn't high enough or you don't have the funds.")
