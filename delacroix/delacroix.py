@@ -37,7 +37,7 @@ class Delacroix(commands.Cog):
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
         self.config.register_member(**default_member)
-
+        self.auctionchecks.start()
 
     @tasks.loop(minutes=5)
     async def auctionchecks(self):
