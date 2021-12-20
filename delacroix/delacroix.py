@@ -156,6 +156,7 @@ class Delacroix(commands.Cog):
         market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture)
 
         channel = self.config.guild(ctx.guild).auctionchannel()
+        channel = channel['auctionchannel']
         print(channel)
 
         embed = discord.Embed(description="", title=market[id]['item'])
@@ -168,7 +169,7 @@ class Delacroix(commands.Cog):
 
         await self.config.guild(ctx.guild).market.set(market)
         await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
-        await channel.send(embed)
+        await channel.send(embed = embed)
 
 
     @commands.group(aliases=["m", "auction"], invoke_without_command=True)
