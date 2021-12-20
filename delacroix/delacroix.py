@@ -350,7 +350,7 @@ class Delacroix(commands.Cog):
             
             embed = msg.embeds[0]
             embed.set_field_at(2, name="COST", value=market[id]['cost'], inline=True)
-            embed.set_field_at(3, name="OWNER", value=market[id]['user'], inline=True)
+            #embed.set_field_at(3, name="OWNER", value=market[id]['user'], inline=True)
             await msg.edit(embed=embed)
         else:
             await ctx.send("Your bid isn't high enough or you don't have the funds.")
