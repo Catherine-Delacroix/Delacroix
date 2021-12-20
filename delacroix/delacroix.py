@@ -40,7 +40,7 @@ class Delacroix(commands.Cog):
 
 
     @tasks.loop(minutes=60)
-    async def auctionchecks(self, ctx):
+    async def auctionchecks(self):
         for guild in guildlist:
             market = await self.config.guild(guild).market()
             channel = await self.config.guild(guild).auctionchannel()
