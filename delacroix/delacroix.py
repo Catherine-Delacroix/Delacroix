@@ -231,11 +231,9 @@ class Delacroix(commands.Cog):
         embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
         embed.set_image(url = image)
-        print(chunks)
+
         max = len(chunks) - 1
         i = 0
-        print("i = "+str(i))
-        print("max = "+str(max))
 
         msg = await ctx.send(embed=embed)
         for emote in emotes:
@@ -266,8 +264,6 @@ class Delacroix(commands.Cog):
                 else:
                     i -=1
                 embed.clear_fields()
-                print("i = "+str(i))
-                print("max = "+str(max))
                 users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                 fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                         zip(chunks[i], users)]
@@ -294,8 +290,6 @@ class Delacroix(commands.Cog):
                 else:
                     i += 1
                 embed.clear_fields()
-                print("i = "+str(i))
-                print("max = "+str(max))
                 users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
                 fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
                         zip(chunks[i], users)]
@@ -326,16 +320,15 @@ class Delacroix(commands.Cog):
 
     @commands.command()
     async def bid(self, ctx, id:str, cost: NumberConverter):
-        """Place a bid on a item at the auction. Example: !bid Goddess 500"""
-        item = await self.config.guild(ctx.guild).market(id)
-        print(item)
-        #item = market[id]
+        """Place a bid on a item at the auction. Example: !bid itemname 500"""
+        market = await self.config.guild(ctx.guild).market()
+        print(market)
         bal = await self.config.member(ctx.author).balance()
-        if bal > item['cost']:
-            item['cost'] = cost
-            item['user'] = ctx.author
-            print(item)
-            await self.config.guild(ctx.guild).market.set(item)
+        if bal > market[id]['cost']:
+            market[id]['cost'] = cost
+            market[id]['user'] = ctx.author
+            print(market)
+            await self.config.guild(ctx.guild).market.set(market)
             await ctx.send("Your bid was successful. Good luck.")
             
         else:
