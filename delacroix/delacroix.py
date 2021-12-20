@@ -342,19 +342,21 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(ctx.author).balance()
         msg = await ctx.fetch_message(market[id]['message'])
 
-#There is a bug where it takes bal into account instead of bid
         if cost > market[id]['cost']:
-            market[id]['cost'] = cost
-            market[id]['user'] = ctx.author.id
-            await self.config.guild(ctx.guild).market.set(market)
-            await ctx.send("Your bid was successful. Good luck.")
-            
-            embed = msg.embeds[0]
-            embed.set_field_at(2, name="OWNER", value=market[id]['user'], inline=True)
-            embed.set_field_at(3, name="COST", value=market[id]['cost'], inline=True)
-            await msg.edit(embed=embed)
+            if bal < market[id]['cost']:
+                await ctx.send("You don't have enough funds.")
+            else:
+                market[id]['cost'] = cost
+                market[id]['user'] = ctx.author.id
+                await self.config.guild(ctx.guild).market.set(market)
+                await ctx.send("Your bid was successful. Good luck.")
+                
+                embed = msg.embeds[0]
+                embed.set_field_at(1, name="OWNER", value=market[id]['user'], inline=True)
+                embed.set_field_at(2, name="COST", value=market[id]['cost'], inline=True)
+                await msg.edit(embed=embed)
         else:
-            await ctx.send("Your bid isn't high enough or you don't have the funds.")
+            await ctx.send("Your bid isn't high enough.")
 
     @commands.command()
     async def resetmarket(self, ctx):
