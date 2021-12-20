@@ -170,8 +170,7 @@ class Delacroix(commands.Cog):
         embed.set_image(url = market[id]['picture'])
 
         message = await channel.send(embed = embed)
-        market[id]['message']['message'] = message.id
-        market[id]['message']['channel'] = message.channel
+        market[id]['message'] = message.id
         await self.config.guild(ctx.guild).market.set(market)
         await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
         #except Exception:
@@ -342,7 +341,7 @@ class Delacroix(commands.Cog):
         market = await self.config.guild(ctx.guild).market()
         bal = await self.config.member(ctx.author).balance()
         msg = await ctx.fetch_message(market[id]['message']['message'])
-        channel = await ctx.fetch_message(market[id]['message']['channel'])
+        channel = await self.config.guild(ctx.guild).auctionchannel()
 
         if cost > market[id]['cost']:
             if bal < market[id]['cost']:
