@@ -232,7 +232,7 @@ class Delacroix(commands.Cog):
                     if 'item' not in listing:
                         id = str(randint(1000,9999))
                         fr[id] = dict(id=id, item=listing, user=ctx.author.id, cost=datum['cost'],
-                                      picture=datum['picture'], user=datum['user'], description=datum['description'], expiration=datum['expiration'])
+                                      picture=datum['picture'], description=datum['description'], expiration=datum['expiration'])
                 br.append(listing)
 
             for i in br:
