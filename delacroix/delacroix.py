@@ -39,8 +39,9 @@ class Delacroix(commands.Cog):
         self.config.register_member(**default_member)
 
 
-    @tasks.loop(minutes=60)
+    @tasks.loop(minutes=5)
     async def auctionchecks(self):
+        print("CHECKING FOR AUCTION COMPLETION \n \n")
         for guild in guildlist:
             market = await self.config.guild(guild).market()
             channel = await self.config.guild(guild).auctionchannel()
