@@ -27,9 +27,7 @@ class Delacroix(commands.Cog):
         default_global = {}
         default_guild = { 
             "market": {},
-            "auctionchannel":{
-                'channel': ''
-            }
+            "auctionchannel":{}
         }
         default_member = {
             "balance":0
@@ -339,6 +337,6 @@ class Delacroix(commands.Cog):
     @commands.command()
     async def setauctionchannel(self, ctx, channel):
         auctionchannel = self.config.guild(ctx.guild).auctionchannel()
-        auctionchannel['channel'] = channel
+        auctionchannel = {'channel': channel}
         await self.config.guild(ctx.guild).auctionchannel.set(auctionchannel)
         await ctx.send("Channel set successfully.")
