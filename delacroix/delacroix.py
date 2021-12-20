@@ -56,7 +56,7 @@ class Delacroix(commands.Cog):
                 print(id)
                 date = datetime.datetime.utcnow()
                 print(date)
-                expire = datetime.strptime(id['expiration'])
+                expire = datetime.strptime(id['expiration'], "%Y-%m-%d %H:%M:%S.%f")
                 print(expire)
                 if expire < date:
                     print("TRYING TO UPDATE")
