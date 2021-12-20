@@ -263,7 +263,7 @@ class Delacroix(commands.Cog):
         embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
         embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
-        embed.add_field(name= fin[0][4], value = fin[1][4])
+        embed.add_field(name= fin[0][4], value = fin[1][4], inline=False)
         footer = "Expires {} UTC".format(fin[1][5])
         embed.set_footer(text=footer)
         embed.set_image(url = image)
@@ -301,21 +301,21 @@ class Delacroix(commands.Cog):
                     i -=1
                 embed.clear_fields()
                 users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
-                fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
-                        zip(chunks[i], users)]
+                fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y), x['description'], x['expiration']] for x, y in zip(chunks[i], users)]
                 image = [[x['picture']] for x , y in zip(chunks[i], users)][0][0]
                 fin.insert(0, [await _(ctx, "ID"),
-                                await _(ctx, "COST"),
-                                await _(ctx, "ITEM"),
-                                await _(ctx, "OWNER"),
-                                await _(ctx, "DESCRIPTION")])
+                            await _(ctx, "COST"),
+                            await _(ctx, "ITEM"),
+                            await _(ctx, "OWNER"),
+                            await _(ctx, "DESCRIPTION"),
+                            await _(ctx, "EXPIRES")])
                 #embed.description = "```\n{}\n```".format(format_table(fin))
                 embed.set_thumbnail(url = image)
                 embed.add_field(name= fin[1][2], value = fin[1][2])
                 embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
-                embed.add_field(name= fin[0][4], value = fin[1][4])
+                embed.add_field(name= fin[0][4], value = fin[1][4], inline=False)
                 footer = "Expires {} UTC".format(fin[1][5])
                 embed.set_footer(text=footer)
                 embed.set_image(url = image)
@@ -331,21 +331,21 @@ class Delacroix(commands.Cog):
                     i += 1
                 embed.clear_fields()
                 users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
-                fin = [[x['id'], f"{x['cost']} dollars", x['item'], str(y)] for x, y in
-                        zip(chunks[i], users)]
+                fin = [[x['id'], f"{x['cost']} {currency}", x['item'], str(y), x['description'], x['expiration']] for x, y in zip(chunks[i], users)]
                 image = [[x['picture']] for x , y in zip(chunks[i], users)][0][0]
                 fin.insert(0, [await _(ctx, "ID"),
-                                await _(ctx, "COST"),
-                                await _(ctx, "ITEM"),
-                                await _(ctx, "OWNER"),
-                                await _(ctx, "DESCRIPTION")])
+                            await _(ctx, "COST"),
+                            await _(ctx, "ITEM"),
+                            await _(ctx, "OWNER"),
+                            await _(ctx, "DESCRIPTION"),
+                            await _(ctx, "EXPIRES")])
                 #embed.description = "```\n{}\n```".format(format_table(fin))
                 embed.set_thumbnail(url = image)
                 embed.add_field(name= fin[1][2], value = fin[1][2])
                 embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
-                embed.add_field(name= fin[0][4], value = fin[1][4])
+                embed.add_field(name= fin[0][4], value = fin[1][4], inline=False)
                 footer = "Expires {} UTC".format(fin[1][5])
                 embed.set_footer(text=footer)
                 embed.set_image(url = image)
