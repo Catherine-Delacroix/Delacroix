@@ -145,31 +145,36 @@ class Delacroix(commands.Cog):
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
 
     @commands.command(aliases=["createlisting", "new", "list"])
-    async def create(self, ctx, item: str, cost: NumberConverter, *, picture: str):
+    async def create(self, ctx, item: str, cost: NumberConverter, *, picture: str, description: str):
         """Create a new auction listing. The listing will return a unique identifier for the item.
          This is used to buy the item later.
-        Example: !list Goddess 500 pictureurl"""
-        cost = abs(cost)
-        market = await self.config.guild(ctx.guild).market()
+        Example: !list item 500 pictureurl"""
+        try:
+            cost = abs(cost)
+            market = await self.config.guild(ctx.guild).market()
 
-        id = str(randint(1000,9999))
-        market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture)
+            id = str(randint(1000,9999))
+            market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture, description=description)
 
-        channel = await self.config.guild(ctx.guild).auctionchannel()
-        channel = ctx.guild.get_channel(channel['channel'])
-        #print(channel)
+            channel = await self.config.guild(ctx.guild).auctionchannel()
+            channel = ctx.guild.get_channel(channel['channel'])
+            #print(channel)
 
-        embed = discord.Embed(description="", title=market[id]['item'])
-        #embed.set_author(name=market[id]['user'])
-        embed.set_thumbnail(url=market[id]['picture'])
-        embed.add_field(name='ID', value=market[id]['id'], inline=True)
-        embed.add_field(name='NAME', value=market[id]['item'], inline=True)
-        embed.add_field(name='COST', value=market[id]['cost'], inline=True)
-        embed.set_image(url = market[id]['picture'])
+            embed = discord.Embed(description=description, title=market[id]['item'])
+            #embed.set_author(name=market[id]['user'])
+            embed.set_thumbnail(url=market[id]['picture'])
+            embed.add_field(name='ID', value=market[id]['id'], inline=True)
+            embed.add_field(name='NAME', value=market[id]['item'], inline=True)
+            embed.add_field(name='COST', value=market[id]['cost'], inline=True)
+            embed.set_image(url = market[id]['picture'])
 
-        await self.config.guild(ctx.guild).market.set(market)
-        await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
-        await channel.send(embed = embed)
+            message = await channel.send(embed = embed)
+            market[id]['message'].append(message)
+            await self.config.guild(ctx.guild).market.set(market)
+            await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
+        except Exception:
+            await ctx.send("Please check that you formatted the command correctly. Otherwise I'll spank you.")
+
 
 
     @commands.group(aliases=["m", "auction"], invoke_without_command=True)
@@ -205,14 +210,13 @@ class Delacroix(commands.Cog):
                     if 'item' not in listing:
                         id = str(randint(1000,9999))
                         fr[id] = dict(id=id, item=listing, user=ctx.author.id, cost=datum['cost'],
-                                      picture=datum['picture'])
+                                      picture=datum['picture'], description=datum['description'])
                 br.append(listing)
 
             for i in br:
                 del um[i]
             um.update(fr)
 
-            #await self.config.guild(ctx.guild).market.set(um)
             market = list(um.items())
             chunks = []
             for i in range(0, len(market), clen):
@@ -228,13 +232,15 @@ class Delacroix(commands.Cog):
         fin.insert(0, [await _(ctx, "ID"),
                        await _(ctx, "COST"),
                        await _(ctx, "ITEM"),
-                       await _(ctx, "OWNER")])
+                       await _(ctx, "OWNER"),
+                       await _(ctx, "DESCRIPTION")])
         #embed.description = "```\n{}\n```".format(format_table(fin))
         embed.set_thumbnail(url = image)
         embed.add_field(name= fin[0][2], value = fin[1][2])
         embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
         embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
         embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
+        embed.add_field(name= fin[0][4], value = fin[1][4])
         embed.set_image(url = image)
 
         max = len(chunks) - 1
@@ -276,13 +282,15 @@ class Delacroix(commands.Cog):
                 fin.insert(0, [await _(ctx, "ID"),
                                 await _(ctx, "COST"),
                                 await _(ctx, "ITEM"),
-                                await _(ctx, "OWNER")])
+                                await _(ctx, "OWNER"),
+                                await _(ctx, "DESCRIPTION")])
                 #embed.description = "```\n{}\n```".format(format_table(fin))
                 embed.set_thumbnail(url = image)
                 embed.add_field(name= fin[1][2], value = fin[1][2])
                 embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
+                embed.add_field(name= fin[0][4], value = fin[1][4])
                 embed.set_image(url = image)
 
                 await msg.edit(embed=embed)
@@ -302,13 +310,15 @@ class Delacroix(commands.Cog):
                 fin.insert(0, [await _(ctx, "ID"),
                                 await _(ctx, "COST"),
                                 await _(ctx, "ITEM"),
-                                await _(ctx, "OWNER")])
+                                await _(ctx, "OWNER"),
+                                await _(ctx, "DESCRIPTION")])
                 #embed.description = "```\n{}\n```".format(format_table(fin))
                 embed.set_thumbnail(url = image)
                 embed.add_field(name= fin[1][2], value = fin[1][2])
                 embed.add_field(name= fin[0][0], value = fin[1][0], inline=True)
                 embed.add_field(name = fin[0][1], value = fin[1][1], inline=True)
                 embed.add_field(name = fin[0][3], value = fin[1][3], inline=True)
+                embed.add_field(name= fin[0][4], value = fin[1][4])
                 embed.set_image(url = image)
 
                 await msg.edit(embed=embed)
@@ -326,16 +336,22 @@ class Delacroix(commands.Cog):
     @commands.command()
     async def bid(self, ctx, id:str, cost: NumberConverter):
         """Place a bid on a item at the auction. Example: !bid itemname 500"""
+
         market = await self.config.guild(ctx.guild).market()
-        print(market)
         bal = await self.config.member(ctx.author).balance()
+        msg = market[id]['message']
+
         if bal > market[id]['cost']:
             market[id]['cost'] = cost
             market[id]['user'] = ctx.author.id
-            print(market)
             await self.config.guild(ctx.guild).market.set(market)
             await ctx.send("Your bid was successful. Good luck.")
             
+            embed = msg.embeds[0].to_dict()
+            embed['COST'] = cost
+            embed['OWNER'] = ctx.author.id
+            embed = discord.Embed.from_dict(embed)
+            await msg.edit(embed)
         else:
             await ctx.send("Your bid isn't high enough or you don't have the funds.")
 
