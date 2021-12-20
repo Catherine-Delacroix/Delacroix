@@ -268,7 +268,6 @@ class Delacroix(commands.Cog):
                 #        i = max
                 #        pass
                 embed.clear_fields()
-                i -= 1
                 print("i = "+str(i))
                 print("max = "+str(max))
                 users = get(ctx.guild.members, id=[x["user"] for x in chunks[i]])
@@ -289,10 +288,11 @@ class Delacroix(commands.Cog):
 
                 await msg.edit(embed=embed)
                 await msg.remove_reaction(emotes[0], u)
+                i -= 1
 
             elif r.emoji == emotes[1]:
                 if i == max:
-                    i = 0
+                    i = -1
                 #    pass
                 #else:
                 embed.clear_fields()
