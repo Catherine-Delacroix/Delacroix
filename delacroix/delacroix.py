@@ -341,17 +341,17 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(ctx.author).balance()
         msg = await ctx.fetch_message(market[id]['message'])
 
-        if bal > market[id]['cost']:
+#There is a bug where it takes bal into account instead of bid
+        if cost > market[id]['cost']:
             market[id]['cost'] = cost
             market[id]['user'] = ctx.author.id
             await self.config.guild(ctx.guild).market.set(market)
             await ctx.send("Your bid was successful. Good luck.")
             
-            embed = msg.embeds[0].to_dict()
-            embed['COST'] = cost
-            embed['OWNER'] = ctx.author.id
-            final_embed = discord.Embed.from_dict(embed)
-            await msg.edit(embed=final_embed)
+            embed = msg.embeds[0]
+            embed.set_field_at(2, name="COST", value=market[id]['cost'], inline=True)
+            embed.set_field_at(3, name="OWNER", value=market[id]['user'], inline=True)
+            await msg.edit(embed=embed)
         else:
             await ctx.send("Your bid isn't high enough or you don't have the funds.")
 
