@@ -172,8 +172,8 @@ class Delacroix(commands.Cog):
             market[id]['message'].append(message)
             await self.config.guild(ctx.guild).market.set(market)
             await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
-        except Exception:
-            await ctx.send("Please check that you formatted the command correctly. Otherwise I'll spank you.")
+        #except Exception:
+        #    await ctx.send("Please check that you formatted the command correctly. Otherwise I'll spank you.")
 
 
 
