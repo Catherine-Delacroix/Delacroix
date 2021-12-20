@@ -334,7 +334,7 @@ class Delacroix(commands.Cog):
         if bal > item['cost']:
             item['cost'] = cost
             item['user'] = ctx.author
-            print(irwm)
+            print(item)
             await self.config.guild(ctx.guild).market.set(item)
             await ctx.send("Your bid was successful. Good luck.")
             
