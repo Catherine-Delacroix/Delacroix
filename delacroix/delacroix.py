@@ -16,7 +16,6 @@ from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _, format_table
 
-guildlist = []
 # CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
 
 class Delacroix(commands.Cog):
@@ -37,7 +36,6 @@ class Delacroix(commands.Cog):
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
         self.config.register_member(**default_member)
-        self.getguild
         self.auctionchecks.start()
         
     def cog_unload(self):
@@ -46,12 +44,13 @@ class Delacroix(commands.Cog):
     @tasks.loop(minutes=5)
     async def auctionchecks(self):
         print("CHECKING FOR AUCTION COMPLETION \n \n")
+        guildlist = self.bot.guilds
         for guild in guildlist:
             print(guild)
             market = await self.config.guild(guild).market()
             print(market)
             channel = await self.config.guild(guild).auctionchannel()
-            channel = guild.get_channel(channel['channel'])
+            channel = await guild.get_channel(channel['channel'])
             print(channel)
             for id in market:
                 print(id)
@@ -64,14 +63,6 @@ class Delacroix(commands.Cog):
                     msg = await channel.get_partial_message(id['message'])
                     await msg.delete(msg)
                     await channel.send("{} has won {} for {} cash").format(id['user'].id, id['item'], id['cost'])
-
-    @commands.command()
-    async def getguild(self, ctx):
-        guildlist = [ctx.guild]
-        try:
-            await ctx.send(ctx.guild)
-        except:
-            pass
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
