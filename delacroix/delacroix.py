@@ -351,7 +351,7 @@ class Delacroix(commands.Cog):
             embed['COST'] = cost
             embed['OWNER'] = ctx.author.id
             embed = discord.Embed.from_dict(embed)
-            await msg.edit(embeds=embed)
+            await msg.edit(embed=embed)
         else:
             await ctx.send("Your bid isn't high enough or you don't have the funds.")
 
@@ -364,7 +364,6 @@ class Delacroix(commands.Cog):
     @checks.mod_or_permissions()
     @commands.command()
     async def setauctionchannel(self, ctx, channel:discord.TextChannel):
-        #auctionchannel = await self.config.guild(ctx.guild).auctionchannel()
         auctionchannel = {'channel': channel.id}
         await self.config.guild(ctx.guild).auctionchannel.set(auctionchannel)
         await ctx.send("Channel set successfully.")
