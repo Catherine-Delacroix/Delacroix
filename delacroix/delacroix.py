@@ -60,7 +60,7 @@ class Delacroix(commands.Cog):
                 print(expire)
                 if expire < date:
                     print("TRYING TO UPDATE")
-                    msg = await channel.get_partial_message(market[id]['message'])
+                    msg = channel.get_partial_message(market[id]['message'])
                     await msg.delete(msg)
                     await channel.send("{} has won {} for {} cash").format(market[id]['user'].id, market[id]['item'], market[id]['cost'])
                     marketnoid = market.pop(id)
@@ -370,7 +370,7 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(ctx.author).balance()
         channel = await self.config.guild(ctx.guild).auctionchannel()
         channel = ctx.guild.get_channel(channel['channel'])
-        msg = await channel.get_partial_message(market[id]['message'])
+        msg = channel.get_partial_message(market[id]['message'])
 
         if cost > market[id]['cost']:
             if bal < market[id]['cost']:
