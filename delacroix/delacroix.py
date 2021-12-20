@@ -143,17 +143,6 @@ class Delacroix(commands.Cog):
         final = bal + amount
         await self.config.member(member).balance.set(final)
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
-    
-    async def send_to_auction_channel(channel, info):
-        embed = discord.Embed(description="", title=info['item'])
-        embed.set_author(name=info['user'])
-        embed.set_thumbnail(url=info['picture'])
-        embed.add_field(name='ID', value=info['id'], inline=True)
-        embed.add_field(name='NAME', value=info['item'], inline=True)
-        embed.add_field(name='COST', value=info['cost'], inline=True)
-        embed.set_image(url = info['picture'])
-
-        await channel.send(embed)
 
     @commands.command(aliases=["createlisting", "new", "list"])
     async def create(self, ctx, item: str, cost: NumberConverter, *, picture: str):
@@ -168,9 +157,17 @@ class Delacroix(commands.Cog):
 
         channel = self.config.guild(ctx.guild).auctionchannel()
 
+        embed = discord.Embed(description="", title=market[id]['item'])
+        embed.set_author(name=market[id]['user'])
+        embed.set_thumbnail(url=market[id]['picture'])
+        embed.add_field(name='ID', value=market[id]['id'], inline=True)
+        embed.add_field(name='NAME', value=market[id]['item'], inline=True)
+        embed.add_field(name='COST', value=market[id]['cost'], inline=True)
+        embed.set_image(url = market[id]['picture'])
+
         await self.config.guild(ctx.guild).market.set(market)
         await ctx.send((await _(ctx, "Item listed with ID {}")).format(id))
-        await send_to_auction_channel(channel['auctionchannel'], market[id])
+        await channel.send(embed)
 
 
     @commands.group(aliases=["m", "auction"], invoke_without_command=True)
