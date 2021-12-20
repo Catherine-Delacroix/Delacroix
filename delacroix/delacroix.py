@@ -155,8 +155,8 @@ class Delacroix(commands.Cog):
         id = str(randint(1000,9999))
         market[id] = dict(id=id, item=item, user=ctx.author.id, cost=cost, picture=picture)
 
-        channel = self.config.guild(ctx.guild).auctionchannel()
-        print(channel)
+        channel = await self.config.guild(ctx.guild).auctionchannel()
+        #print(channel)
 
         embed = discord.Embed(description="", title=market[id]['item'])
         embed.set_author(name=market[id]['user'])
