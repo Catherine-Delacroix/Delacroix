@@ -16,7 +16,6 @@ from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _, format_table
 
-# CHECK IF BAL[0] IS BANK OR HAND, SET TO BANK, REMOVE HAND FUNCTIONALITY
 
 class Delacroix(commands.Cog):
     """My custom cog"""
@@ -28,10 +27,12 @@ class Delacroix(commands.Cog):
         default_global = {}
         default_guild = { 
             "market": {},
-            "auctionchannel":{}
+            "auctionchannel":{},
+            "jobs": {},
         }
         default_member = {
-            "balance":0
+            "balance":0,
+            "overdue":0,
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -40,6 +41,7 @@ class Delacroix(commands.Cog):
         
     def cog_unload(self):
         self.auctionchecks.cancel()
+
 
     @tasks.loop(minutes=60)
     async def auctionchecks(self):
@@ -66,6 +68,12 @@ class Delacroix(commands.Cog):
                     await channel.send(announce)
                     marketnoid = market.pop(id)
                     await self.config.guild(guild).market(id).set(marketnoid)
+
+    """
+    
+    ECONOMY SYSTEM
+
+    """
 
     @commands.group(aliases=["bal", "balance", "eco", "e"], invoke_without_command=True)
     async def economy(self, ctx, *, member: discord.Member = None):
@@ -161,6 +169,12 @@ class Delacroix(commands.Cog):
         final = bal + amount
         await self.config.member(member).balance.set(final)
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
+
+    """
+
+    AUCTION SYSTEM
+    
+    """
 
     @commands.command(aliases=["createlisting", "new", "list"])
     async def create(self, ctx, item: str, cost: NumberConverter, picture: str, expires_in: int, *,description: str):
@@ -401,3 +415,56 @@ class Delacroix(commands.Cog):
         auctionchannel = {'channel': channel.id}
         await self.config.guild(ctx.guild).auctionchannel.set(auctionchannel)
         await ctx.send("Channel set successfully.")
+    
+    """
+    
+    JOBS SYSTEM
+    
+    """
+    @checks.mod_or_permissions()
+    @commands.command(aliases = ["sj"])
+    @commands.command()
+    async def setjob(self, ctx, job, payscale):
+        createjob = dict(name=job, payscale=payscale)
+        jobdict = await self.config.guild(ctx.guild).jobs()
+        jobdict.update(createjob)
+        await self.config.guild(ctx.guild).jobs.set(jobdict)
+        await ctx.send("Job created/updated successfully.")
+    
+    @commands.command(aliases = ["due"])
+    @commands.command()
+    async def overdue(self, ctx):
+        overdue = await self.config.member(ctx.author).overdue()
+        dest = ctx.channel
+        data = """Total:\t\t {} Lewds earned from rps ready for deposit."""
+        member = ctx.author
+
+        embed = discord.Embed(
+            description=data.format(int(overdue)),
+            color=randint(0, 0xFFFFFF),
+        )
+        embed.set_author(name=member.display_name, icon_url=member.avatar_url)
+        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/761074204828631040.png?size=96")
+
+        await dest.send(embed=embed)
+    
+    @commands.command(aliases = ["dep"])
+    @commands.command()
+    async def deposit(self, ctx):
+        overdue = await self.config.member(ctx.author).overdue()
+        balance = await self.config.member(ctx.author).balance()
+        nbalance = balance+overdue
+        await self.config.member(ctx.author).balance.set(nbalance)
+        data = "{} hard-earned Lewds has been added to your balance which now is {} Lewds".format(overdue,nbalance)
+        channel = ctx.channel
+        await channel.send(data)
+
+    @commands.command(aliases = ["s"])
+    @commands.has_role("Slut")
+    async def slut(self, ctx, *, rp:str):
+        earning = len(rp)
+        mult = await self.config.guild(ctx.guild).jobs()
+        mult = mult["Slut"]
+        earning = earning*mult*0,1
+        overdue = await self.config.member(ctx.author).overdue()
+        await self.config.member(ctx.author).overdue.set(overdue+earning)
