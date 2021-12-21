@@ -447,7 +447,7 @@ class Delacroix(commands.Cog):
         member = ctx.author
 
         embed = discord.Embed(
-            description=data.format(int(overdue)),
+            description=data.format(overdue),
             color=randint(0, 0xFFFFFF),
         )
         embed.set_author(name=member.display_name, icon_url=member.avatar_url)
