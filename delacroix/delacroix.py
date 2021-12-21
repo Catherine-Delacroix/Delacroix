@@ -474,6 +474,7 @@ class Delacroix(commands.Cog):
         balance = await self.config.member(ctx.author).balance()
         nbalance = balance+overdue
         await self.config.member(ctx.author).balance.set(nbalance)
+        await self.config.member(ctx.author).overdue.set(0)
         data = "{} hard-earned Lewds has been added to your balance which now is {} Lewds".format(overdue,nbalance)
         channel = ctx.channel
         await channel.send(data)
