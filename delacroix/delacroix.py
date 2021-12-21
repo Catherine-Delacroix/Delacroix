@@ -371,7 +371,7 @@ class Delacroix(commands.Cog):
         bal = await self.config.member(ctx.author).balance()
         channel = await self.config.guild(ctx.guild).auctionchannel()
         channel = ctx.guild.get_channel(channel['channel'])
-        msg = channel.get_partial_message(market[id]['message'])
+        msg = await channel.fetch_message(market[id]['message'])
 
         if cost > market[id]['cost']:
             if bal < market[id]['cost']:
