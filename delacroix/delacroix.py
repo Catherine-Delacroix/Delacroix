@@ -437,6 +437,7 @@ class Delacroix(commands.Cog):
     async def resetjobs(self,ctx):
         nojobs = {}
         await self.config.guild(ctx.guild).jobs.set(nojobs)
+        await ctx.send("Jobs have been reset.")
     
     @commands.command(aliases = ["due"])
     async def overdue(self, ctx):
@@ -473,4 +474,4 @@ class Delacroix(commands.Cog):
         mult = mult["Slut"]
         earning = earning*mult*0,1
         overdue = await self.config.member(ctx.author).overdue()
-        await self.config.member(ctx.author).overdue.set(overdue+earning)
+        await self.config.member(ctx.author).overdue.set(int(overdue)+int(earning))
