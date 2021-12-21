@@ -433,7 +433,7 @@ class Delacroix(commands.Cog):
         await ctx.send("Job created/updated successfully.")
     
     @checks.mod_or_permissions()
-    @commands.command(aliases = ["sj"])
+    @commands.command()
     async def resetjobs(self,ctx):
         nojobs = {}
         await self.config.guild(ctx.guild).jobs.set(nojobs)
