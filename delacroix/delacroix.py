@@ -441,8 +441,14 @@ class Delacroix(commands.Cog):
 
     @checks.mod_or_permissions()
     @commands.command()
-    async def setoverdue(self, ctx, member, value):
-        await self.config.member(member).overdue.set(value)
+    async def setoverdue(self, ctx, *members: MemberConverter, value):
+        #await self.config.member(member).overdue.set(value)
+
+        members = chain(members)
+
+        for member in members:
+            await self.config.member(member).balance.set(value)
+
         await ctx.send("Overdue set to {}".format(value))
     
     @commands.command(aliases = ["due"])
