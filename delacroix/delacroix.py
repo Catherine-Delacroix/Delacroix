@@ -486,7 +486,7 @@ class Delacroix(commands.Cog):
         mult = await self.config.guild(ctx.guild).jobs()
         print(mult)
         mult = mult["Slut"]
-        earning = earning*mult*0.1
+        earning = float(earning)*float(mult)*0.1
         overdue = await self.config.member(ctx.author).overdue()
         overdue = overdue*1.0
         await self.config.member(ctx.author).overdue.set(overdue+earning)
