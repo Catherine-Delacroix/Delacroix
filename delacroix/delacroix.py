@@ -472,7 +472,7 @@ class Delacroix(commands.Cog):
     async def deposit(self, ctx):
         overdue = await self.config.member(ctx.author).overdue()
         balance = await self.config.member(ctx.author).balance()
-        nbalance = 1.0*balance+1.0*overdue
+        nbalance = float(balance)+float(overdue)
         await self.config.member(ctx.author).balance.set(nbalance)
         await self.config.member(ctx.author).overdue.set(0)
         data = "{} hard-earned Lewds has been added to your balance which now is {} Lewds".format(overdue,nbalance)
