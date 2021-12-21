@@ -424,11 +424,19 @@ class Delacroix(commands.Cog):
     @checks.mod_or_permissions()
     @commands.command(aliases = ["sj"])
     async def setjob(self, ctx, job, payscale):
-        createjob = dict(name=job, payscale=payscale)
+        createjob = {
+            job:payscale,
+        }
         jobdict = await self.config.guild(ctx.guild).jobs()
         jobdict.update(createjob)
         await self.config.guild(ctx.guild).jobs.set(jobdict)
         await ctx.send("Job created/updated successfully.")
+    
+    @checks.mod_or_permissions()
+    @commands.command(aliases = ["sj"])
+    async def resetjobs(self,ctx):
+        nojobs = {}
+        await self.config.guild(ctx.guild).jobs.set(nojobs)
     
     @commands.command(aliases = ["due"])
     async def overdue(self, ctx):
