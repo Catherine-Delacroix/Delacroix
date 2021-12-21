@@ -423,7 +423,6 @@ class Delacroix(commands.Cog):
     """
     @checks.mod_or_permissions()
     @commands.command(aliases = ["sj"])
-    @commands.command()
     async def setjob(self, ctx, job, payscale):
         createjob = dict(name=job, payscale=payscale)
         jobdict = await self.config.guild(ctx.guild).jobs()
@@ -432,7 +431,6 @@ class Delacroix(commands.Cog):
         await ctx.send("Job created/updated successfully.")
     
     @commands.command(aliases = ["due"])
-    @commands.command()
     async def overdue(self, ctx):
         overdue = await self.config.member(ctx.author).overdue()
         dest = ctx.channel
@@ -449,7 +447,6 @@ class Delacroix(commands.Cog):
         await dest.send(embed=embed)
     
     @commands.command(aliases = ["dep"])
-    @commands.command()
     async def deposit(self, ctx):
         overdue = await self.config.member(ctx.author).overdue()
         balance = await self.config.member(ctx.author).balance()
