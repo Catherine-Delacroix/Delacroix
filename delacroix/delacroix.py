@@ -447,7 +447,7 @@ class Delacroix(commands.Cog):
         members = chain(members)
 
         for member in members:
-            await self.config.member(member).balance.set(value)
+            await self.config.member(member).overdue.set(value)
 
         await ctx.send("Overdue set to {}".format(value))
     
