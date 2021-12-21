@@ -455,7 +455,7 @@ class Delacroix(commands.Cog):
     async def overdue(self, ctx):
         overdue = await self.config.member(ctx.author).overdue()
         dest = ctx.channel
-        print(overdue)
+        overdue = round(overdue,1)
         data = """{} hard-earned Lewds are ready for deposit.""".format(overdue)
         member = ctx.author
 
@@ -473,6 +473,7 @@ class Delacroix(commands.Cog):
         overdue = await self.config.member(ctx.author).overdue()
         balance = await self.config.member(ctx.author).balance()
         nbalance = float(balance)+float(overdue)
+        nbalance = round(nbalance,1)
         await self.config.member(ctx.author).balance.set(nbalance)
         await self.config.member(ctx.author).overdue.set(0)
         data = "{} hard-earned Lewds has been added to your balance which now is {} Lewds".format(overdue,nbalance)
@@ -487,6 +488,7 @@ class Delacroix(commands.Cog):
         print(mult)
         mult = mult["Slut"]
         earning = float(earning)*float(mult)*0.1
+        earning = round(earning, 1)
         overdue = await self.config.member(ctx.author).overdue()
-        overdue = overdue*1.0
+        overdue = float(overdue)
         await self.config.member(ctx.author).overdue.set(overdue+earning)
