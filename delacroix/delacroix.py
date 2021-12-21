@@ -474,4 +474,4 @@ class Delacroix(commands.Cog):
         mult = mult["Slut"]
         earning = earning*mult*0,1
         overdue = await self.config.member(ctx.author).overdue()
-        await self.config.member(ctx.author).overdue.set(int(overdue)+int(earning))
+        await self.config.member(ctx.author).overdue.set(tuple(overdue)+earning)
