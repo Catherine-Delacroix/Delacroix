@@ -461,6 +461,7 @@ class Delacroix(commands.Cog):
     async def slut(self, ctx, *, rp:str):
         earning = len(rp)
         mult = await self.config.guild(ctx.guild).jobs()
+        print(mult)
         mult = mult["Slut"]
         earning = earning*mult*0,1
         overdue = await self.config.member(ctx.author).overdue()
