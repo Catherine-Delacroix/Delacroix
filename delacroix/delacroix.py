@@ -455,6 +455,7 @@ class Delacroix(commands.Cog):
     async def overdue(self, ctx):
         overdue = await self.config.member(ctx.author).overdue()
         dest = ctx.channel
+        print(overdue)
         data = """{} hard-earned Lewds are ready for deposit.""".format(overdue)
         member = ctx.author
 
