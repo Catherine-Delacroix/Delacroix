@@ -569,11 +569,12 @@ class Delacroix(commands.Cog):
         fight = []
         for i in currentfights:
             if loser in i:
-                fight.append(i)
+                fight = i
                 print(fight)
                 currentfights.remove(fight)
+                print(currentfights)
                 break
-
+        print(fight)
         winner = fight[0].remove(loser)
         print(winner)
         winner = winner[0]
