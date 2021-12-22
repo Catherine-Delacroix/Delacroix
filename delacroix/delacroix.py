@@ -574,6 +574,7 @@ class Delacroix(commands.Cog):
                 currentfights.remove(fight)
                 print(currentfights)
                 break
+        await self.config.guild(ctx.guild).currentfights.set()
         print("fight is {}".format(fight))
         print(loser)
         fight.remove(loser)
