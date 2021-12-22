@@ -69,6 +69,7 @@ class Delacroix(commands.Cog):
                 if expire < date:
                     #print("TRYING TO UPDATE")
                     msg = channel.get_partial_message(market[id]['message'])
+                    print(msg)
                     await msg.delete()
                     announce = "{} has won {} for {} Lewds".format(market[id]['user'], market[id]['item'], market[id]['cost'])
                     await channel.send(announce)
@@ -631,5 +632,5 @@ class Delacroix(commands.Cog):
 
     @commands.command()
     async def listroles(self,ctx):
-        roles = ctx.author.guild.roles
+        roles = get(ctx.author.guild.roles, name="Fighter")
         await ctx.send(roles)
