@@ -82,7 +82,7 @@ class Delacroix(commands.Cog):
         for guild in guildlist:
             memberlist = self.guild.members
             channel = await self.config.guild(guild).announcementschannel()
-            role = get(member.guild.roles, name="Identured Slut")
+            role = discord.utils.get(member.guild.roles, name="Identured Slut")
             for member in memberlist:
                 balance = await self.config.member(member).balance()
                 if balance < 0:
@@ -545,7 +545,7 @@ class Delacroix(commands.Cog):
                 pass
             else:
                 if message.content == ";accept":
-                    role = get(ctx.author.guild.roles, name="Fighter")
+                    role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
                     print(role)
                     await ctx.author.add_roles(ctx.author, role)
                     await opponent.add_roles(opponent, role)
@@ -562,7 +562,7 @@ class Delacroix(commands.Cog):
     async def surrender(self, ctx):
         currentfights = await self.config.guild(ctx.guild).currentfights()
         loser = ctx.author.id
-        role = get(ctx.author.guild.roles, name="Fighter")
+        role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
 
         for i in currentfights:
             if loser in i:
@@ -600,7 +600,7 @@ class Delacroix(commands.Cog):
         currentfights.remove(fighters)
         await self.config.guild(ctx.guild).currentfights.set(currentfights)
 
-        role = get(ctx.author.guild.roles, name="Fighter")
+        role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         remove1 = self.get_user_info(one)
         remove2 = self.get_user_info(two)
         await remove1.remove_roles(remove1, role)
@@ -611,7 +611,7 @@ class Delacroix(commands.Cog):
     async def purgefights(self, ctx):
         currentfights = []
         await self.config.guild(ctx.guild).currentfights.set(currentfights)
-        role = get(ctx.author.guild.roles, name="Fighter")
+        role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         memberlist = role.members
         for member in memberlist:
             await member.remove_roles(member, role)
