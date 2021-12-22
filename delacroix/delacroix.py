@@ -616,7 +616,7 @@ class Delacroix(commands.Cog):
     
     @commands.command()
     @checks.mod_or_permissions()
-    async def setring(self,ctx, channel:discord.Channel):
+    async def setring(self,ctx, channel:discord.TextChannel):
         ch = [channel]
         await self.config.guild(ctx.guild).ringchannel.set(ch)
 
