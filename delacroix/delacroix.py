@@ -86,11 +86,11 @@ class Delacroix(commands.Cog):
             for member in memberlist:
                 balance = await self.config.member(member).balance()
                 if balance < 0:
-                    await member.add_roles(member, role)
+                    await client.add_roles(member, role)
                     message = "{} has been Identured into service due to their negative balance of {}".format(member, balance)
                     await channel.send(message)
                 elif balance >= 0 and role in member.roles:
-                    await member.remove_roles(member, role)
+                    await client.remove_roles(member, role)
                     message = "{} is no longer an Identured Slut as they are no longer in debt".format(member)
                     await channel.send(message)
 
@@ -547,8 +547,8 @@ class Delacroix(commands.Cog):
                 if message.content == ";accept":
                     role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
                     print(role)
-                    await ctx.author.add_roles(ctx.author, role)
-                    await opponent.add_roles(opponent, role)
+                    await client.add_roles(ctx.author, role)
+                    await client.add_roles(opponent, role)
                     fighters = [ctx.author.id, opponent.id]
                     currentfights.append(fighters)
                     await self.config.guild(ctx.guild).currentfights.set(currentfights)
@@ -588,8 +588,8 @@ class Delacroix(commands.Cog):
 
         await ctx.send("The winner of the fight is:\n{}({})\nThe loser of the fight is:\n{}({})".format(winner, formatwscore,loser,formatlscore))
 
-        await winner.remove_roles(winner, role)
-        await loser.remove_roles(loser, role)
+        await client.remove_roles(winner, role)
+        await client.remove_roles(loser, role)
     
     @commands.command()
     @checks.mod_or_permissions()
@@ -603,8 +603,8 @@ class Delacroix(commands.Cog):
         role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         remove1 = self.get_user_info(one)
         remove2 = self.get_user_info(two)
-        await remove1.remove_roles(remove1, role)
-        await remove2.remove_roles(remove2, role)
+        await client.remove_roles(remove1, role)
+        await client.remove_roles(remove2, role)
 
     @commands.command()
     @checks.mod_or_permissions()
@@ -614,7 +614,7 @@ class Delacroix(commands.Cog):
         role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         memberlist = role.members
         for member in memberlist:
-            await member.remove_roles(member, role)
+            await client.remove_roles(member, role)
     
     @commands.command()
     @checks.mod_or_permissions()
