@@ -539,7 +539,7 @@ class Delacroix(commands.Cog):
                 return user == opponent and msg.content == ";accept" or msg.content == ";reject"
             
             try:
-                message = await client.wait_for('message', timeout=300.0, check=check)
+                message = await self.bot.wait_for('message', timeout=300.0, check=check)
             except asyncio.TimeoutError:
                 pass
             else:
