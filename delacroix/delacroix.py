@@ -16,7 +16,7 @@ from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _, format_table
 
-client = discord.Client
+#client = discord.Client
 
 
 class Delacroix(commands.Cog):
@@ -580,8 +580,8 @@ class Delacroix(commands.Cog):
         print(fight)
         winner = fight
         print(winner)
-        winner = await client.get_user(self = self ,id = winner[0])
-        loser = await client.get_user(self = self, id = loser)
+        winner = await self.bot.get_user(id = winner[0])
+        loser = await self.bot.get_user(id = loser)
 
         winnerscore = await self.config.member(winner).score()
         winnerscore[0] += 1
