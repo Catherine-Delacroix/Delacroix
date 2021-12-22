@@ -535,8 +535,8 @@ class Delacroix(commands.Cog):
             text = "{} has challenged {} to a fight.\nTo accept the challenge send the command ;accept otherwise ;reject.".format(ctx.author.display_name,opponent.display_name)
             await ctx.send(text)
 
-            def check(msg: discord.Message, user):
-                return user == opponent and msg.content == ";accept" or msg.content == ";reject"
+            def check(msg: discord.Message):
+                return msg.author == opponent and msg.content == ";accept" or msg.content == ";reject"
             
             try:
                 message = await self.bot.wait_for('message', timeout=300.0, check=check)
