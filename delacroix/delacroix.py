@@ -30,6 +30,7 @@ class Delacroix(commands.Cog):
         default_guild = { 
             "market": {},
             "auctionchannel":{},
+            "ringchannel":[],
             "jobs": {},
             "currentfights": [],
         }
@@ -593,3 +594,9 @@ class Delacroix(commands.Cog):
         memberlist = role.members
         for member in memberlist:
             await self.bot.remove_roles(member, role)
+    
+    @commands.command()
+    @checks.mod_or_permissions()
+    async def setring(self,ctx, channel:discord.Channel):
+        ch = [channel]
+        await self.config.guild(ctx.guild).ringchannel.set(ch)
