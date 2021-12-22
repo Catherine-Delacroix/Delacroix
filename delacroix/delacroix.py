@@ -576,10 +576,12 @@ class Delacroix(commands.Cog):
                 break
         print("fight is {}".format(fight))
         print(loser)
-        winner = fight.remove(loser)
+        fight.remove(loser)
+        print(fight)
+        winner = fight
         print(winner)
-        winner = await self.get_user(winner)
-        loser = await self.get_user(loser)
+        winner = await client.get_user(winner)
+        loser = await client.get_user(loser)
 
         winnerscore = await self.config.member(winner).score()
         winnerscore[0] += 1
