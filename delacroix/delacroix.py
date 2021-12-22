@@ -622,6 +622,6 @@ class Delacroix(commands.Cog):
 
     @commands.command()
     @checks.mod_or_permissions()
-    async def setannouncements(self,ctx, channel:discord.Channel):
+    async def setannouncements(self,ctx, channel:discord.TextChannel):
         ch = [channel]
         await self.config.guild(ctx.guild).announcementschannel.set(ch)
