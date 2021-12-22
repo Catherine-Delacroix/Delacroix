@@ -523,7 +523,7 @@ class Delacroix(commands.Cog):
     
     """
     @commands.command()
-    async def challenge(self, ctx, opponent):
+    async def challenge(self, ctx, opponent: discord.Member):
         currentfights = await self.config.guild(ctx.guild).currentfights()
         if any(ctx.author.id in sublist for sublist in currentfights):
             await ctx.send("You are already involved in a fight.")
