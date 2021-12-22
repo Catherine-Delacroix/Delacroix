@@ -619,9 +619,11 @@ class Delacroix(commands.Cog):
     async def setring(self,ctx, channel:discord.TextChannel):
         ch = str(channel)
         await self.config.guild(ctx.guild).ringchannel.set(ch)
+        await ctx.send("The ring channel has been set.")
 
     @commands.command()
     @checks.mod_or_permissions()
     async def setannouncements(self,ctx, channel:discord.TextChannel):
         ch = str(channel)
         await self.config.guild(ctx.guild).announcementschannel.set(ch)
+        await ctx.send("The announcement channel has been set.")
