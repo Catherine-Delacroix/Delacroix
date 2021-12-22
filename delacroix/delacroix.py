@@ -575,7 +575,7 @@ class Delacroix(commands.Cog):
                 print(currentfights)
                 break
         print(fight)
-        winner = fight[0].remove(loser)
+        winner = fight.remove(loser)
         print(winner)
         winner = winner[0]
         print(winner)
