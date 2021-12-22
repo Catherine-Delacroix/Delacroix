@@ -632,5 +632,5 @@ class Delacroix(commands.Cog):
 
     @commands.command()
     async def listroles(self,ctx):
-        roles = get(ctx.author.guild.roles, name="Fighter")
+        roles = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         await ctx.send(roles)
