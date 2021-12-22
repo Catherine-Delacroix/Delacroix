@@ -563,20 +563,21 @@ class Delacroix(commands.Cog):
     @commands.has_role("Fighter")
     async def surrender(self, ctx):
         currentfights = await self.config.guild(ctx.guild).currentfights()
-        print(currentfights)
+        print("Currentfights is {}".format(currentfights))
         loser = ctx.author.id
         role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
-
+        fight = []
         for i in currentfights:
             if loser in i:
-                fight = i
+                fight.append(i)
                 print(fight)
                 currentfights.remove(fight)
                 break
 
-        winner = fight.remove(loser)
+        winner = fight[0].remove(loser)
         print(winner)
         winner = winner[0]
+        print(winner)
         winner = await self.get_user(winner)
         loser = await self.get_user(loser)
 
