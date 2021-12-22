@@ -580,8 +580,8 @@ class Delacroix(commands.Cog):
         print(fight)
         winner = fight
         print(winner)
-        winner = await self.bot.get_user(id = winner[0])
-        loser = await self.bot.get_user(id = loser)
+        winner = self.bot.get_user(id = winner[0])
+        loser = self.bot.get_user(id = loser)
 
         winnerscore = await self.config.member(winner).score()
         winnerscore[0] += 1
