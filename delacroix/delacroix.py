@@ -627,3 +627,8 @@ class Delacroix(commands.Cog):
         ch = str(channel)
         await self.config.guild(ctx.guild).announcementschannel.set(ch)
         await ctx.send("The announcement channel has been set.")
+
+    @commands.command()
+    async def listroles(self,ctx):
+        roles = ctx.author.guild.roles
+        await ctx.send(roles)
