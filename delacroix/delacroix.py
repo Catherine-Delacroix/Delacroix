@@ -527,6 +527,7 @@ class Delacroix(commands.Cog):
     @commands.command()
     async def challenge(self, ctx, opponent: discord.Member):
         currentfights = await self.config.guild(ctx.guild).currentfights()
+        print(currentfights)
         author = ctx.author
         if any(ctx.author.id in sublist for sublist in currentfights):
             await ctx.send("You are already involved in a fight.")
@@ -548,27 +549,28 @@ class Delacroix(commands.Cog):
             else:
                 if message.content == ";accept":
                     role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
-                    print(role)
                     await author.add_roles(role)
                     await opponent.add_roles(role)
                     fighters = [ctx.author.id, opponent.id]
+                    print(fighters)
                     currentfights.append(fighters)
+                    print(currentfights)
                     await self.config.guild(ctx.guild).currentfights.set(currentfights)
                 elif message.content == ";reject":
                     await ctx.send("The challenge has been rejected.")
-                else:
-                    return
     
     @commands.command()
     @commands.has_role("Fighter")
     async def surrender(self, ctx):
         currentfights = await self.config.guild(ctx.guild).currentfights()
+        print(currentfights)
         loser = ctx.author.id
         role = discord.utils.get(ctx.author.guild.roles, name="Fighter")
 
         for i in currentfights:
             if loser in i:
                 fight = i
+                print(fight)
                 currentfights.remove(fight)
                 break
 
