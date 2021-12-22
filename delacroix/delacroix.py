@@ -16,6 +16,8 @@ from .cogs.utils import checks
 from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, create_pages, IntConverter
 from .cogs.utils.translation import _, format_table
 
+client = discord.Client
+
 
 class Delacroix(commands.Cog):
     """My custom cog"""
@@ -29,10 +31,12 @@ class Delacroix(commands.Cog):
             "market": {},
             "auctionchannel":{},
             "jobs": {},
+            "currentfights": [],
         }
         default_member = {
             "balance":0,
             "overdue":0,
+            "score":[0,0]
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -492,3 +496,100 @@ class Delacroix(commands.Cog):
         overdue = await self.config.member(ctx.author).overdue()
         overdue = float(overdue)
         await self.config.member(ctx.author).overdue.set(overdue+earning)
+
+    """
+    
+    Fighting System
+    
+    """
+    @commands.command()
+    async def challenge(self, ctx, opponent):
+        currentfights = await self.config.guild(ctx.guild).currentfights()
+        if any(ctx.author.id in sublist for sublist in currentfights):
+            await ctx.send("You are already involved in a fight.")
+            return
+        elif any(opponent.id in sublist for sublist in currentfights):
+            await ctx.send("Your opponent is already in a fight.")
+            return
+        else:
+            text = "{} has challenged {} to a fight.\nTo accept the challenge send the command ;accept otherwise ;reject.".format(ctx.author.display_name,opponent.display_name)
+            await ctx.send(text)
+
+            def check(msg: discord.Message, user):
+                return user == opponent and msg.content == ";accept" or msg.content == ";reject"
+            
+            try:
+                message = await client.wait_for('message', timeout=300.0, check=check)
+            except asyncio.TimeoutError:
+                pass
+            else:
+                if message.content == ";accept":
+                    role = get(ctx.author.server.roles, name="Fighter")
+                    await self.bot.add_roles(ctx.author, role)
+                    await self.bot.add_roles(opponent, role)
+                    fighters = [ctx.author.id, opponent.id]
+                    currentfights.append(fighters)
+                    await self.config.guild(ctx.guild).currentfights.set(currentfights)
+                elif message.content == ";reject":
+                    await ctx.send("The challenge has been rejected.")
+                else:
+                    return
+    
+    @commands.command()
+    @commands.has_role("Fighter")
+    async def surrender(self, ctx):
+        currentfights = await self.config.guild(ctx.guild).currentfights()
+        loser = ctx.author.id
+        role = get(ctx.author.server.roles, name="Fighter")
+
+        for i in currentfights:
+            if loser in i:
+                fight = i
+                currentfights.remove(fight)
+                break
+
+        winner = fight.remove(loser)
+        winner = winner[0]
+        winner = self.get_user_info(winner)
+        loser = self.get_user_info(loser)
+
+        winnerscore = await self.config.member(winner).score()
+        winnerscore[0] += 1
+        await self.config.member(winner).score.set(winnerscore)
+
+        loserscore = await self.config.member(loser).score()
+        loserscore[1] += 1
+        await self.config.member(loser).score.set(loserscore)
+
+        formatwscore = "{}W | {}L".format(winnerscore[0],winnerscore[1])
+        formatlscore = "{}W | {}L".format(loserscore[0], loserscore[1])
+
+        await ctx.send("The winner of the fight is:\n{}({})\nThe loser of the fight is:\n{}({})".format(winner, formatwscore,loser,formatlscore))
+
+        await self.bot.remove_roles(winner, role)
+        await self.bot.remove_roles(loser, role)
+    
+    @commands.command()
+    @checks.mod_or_permissions()
+    async def endfight(self, ctx, one: discord.Member, two: discord.Member):
+        currentfights = await self.config.guild(ctx.guild).currentfights()
+        fighters = [one.id, two.id]
+        currentfights = await self.config.guild(ctx.guild).currentfights()
+        currentfights.remove(fighters)
+        await self.config.guild(ctx.guild).currentfights.set(currentfights)
+
+        role = get(ctx.author.server.roles, name="Fighter")
+        remove1 = self.get_user_info(one)
+        remove2 = self.get_user_info(two)
+        await self.bot.remove_roles(remove1, role)
+        await self.bot.remove_roles(remove2, role)
+
+    @commands.command()
+    @checks.mod_or_permissions()
+    async def purgefights(self, ctx):
+        currentfights = []
+        await self.config.guild(ctx.guild).currentfights.set(currentfights)
+        role = get(ctx.author.server.roles, name="Fighter")
+        memberlist = role.members
+        for member in memberlist:
+            await self.bot.remove_roles(member, role)
