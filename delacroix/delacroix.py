@@ -578,8 +578,6 @@ class Delacroix(commands.Cog):
         print(loser)
         winner = fight.remove(loser)
         print(winner)
-        winner = winner[0]
-        print(winner)
         winner = await self.get_user(winner)
         loser = await self.get_user(loser)
 
