@@ -31,6 +31,7 @@ class Delacroix(commands.Cog):
             "market": {},
             "auctionchannel":{},
             "ringchannel":[],
+            "announcementschannel":[],
             "jobs": {},
             "currentfights": [],
         }
@@ -46,33 +47,51 @@ class Delacroix(commands.Cog):
         
     def cog_unload(self):
         self.auctionchecks.cancel()
-
+        self.balancechecks.cancel()
 
     @tasks.loop(minutes=60)
     async def auctionchecks(self):
-        print("CHECKING FOR AUCTION COMPLETION \n \n")
+        #print("CHECKING FOR AUCTION COMPLETION \n \n")
         guildlist = self.bot.guilds
         for guild in guildlist:
-            print(guild)
+            #print(guild)
             market = await self.config.guild(guild).market()
-            print(market)
+            #print(market)
             channel = await self.config.guild(guild).auctionchannel()
             channel = guild.get_channel(channel['channel'])
-            print(channel)
+            #print(channel)
             for id in market:
-                print(id)
+                #print(id)
                 date = datetime.datetime.utcnow()
-                print(date)
+                #print(date)
                 expire = datetime.datetime.strptime(market[id]['expiration'], "%Y-%m-%d %H:%M:%S.%f")
-                print(expire)
+                #print(expire)
                 if expire < date:
-                    print("TRYING TO UPDATE")
+                    #print("TRYING TO UPDATE")
                     msg = channel.get_partial_message(market[id]['message'])
                     await msg.delete()
                     announce = "{} has won {} for {} Lewds".format(market[id]['user'], market[id]['item'], market[id]['cost'])
                     await channel.send(announce)
                     marketnoid = market.pop(id)
                     await self.config.guild(guild).market(id).set(marketnoid)
+
+    @tasks.loop(hours=60)
+    async def balancechecks(self):
+        guildlist = self.bot.guilds
+        for guild in guildlist:
+            memberlist = self.guild.members
+            channel = await self.config.guild(guild).announcementschannel()
+            role = get(member.server.roles, name="Identured Slut")
+            for member in memberlist:
+                balance = await self.config.member(member).balance()
+                if balance < 0:
+                    await self.bot.add_roles(member, role)
+                    message = "{} has been Identured into service due to their negative balance of {}".format(member, balance)
+                    await channel.send(message)
+                elif balance >= 0 and role in member.roles:
+                    await self.bot.remove_roles(member, role)
+                    message = "{} is no longer an Identured Slut as they are no longer in debt".format(member)
+                    await channel.send(message)
 
     """
     
@@ -485,13 +504,13 @@ class Delacroix(commands.Cog):
         channel = ctx.channel
         await channel.send(data)
 
-    @commands.command(aliases = ["s"])
-    @commands.has_role("Slut")
+    @commands.command(aliases = ["s", "pu"])
+    @commands.has_role("Public Use")
     async def slut(self, ctx, *, rp:str):
         earning = len(rp)
         mult = await self.config.guild(ctx.guild).jobs()
         print(mult)
-        mult = mult["Slut"]
+        mult = mult["Public Use"]
         earning = float(earning)*float(mult)*0.1
         earning = round(earning, 1)
         overdue = await self.config.member(ctx.author).overdue()
@@ -600,3 +619,9 @@ class Delacroix(commands.Cog):
     async def setring(self,ctx, channel:discord.Channel):
         ch = [channel]
         await self.config.guild(ctx.guild).ringchannel.set(ch)
+
+    @commands.command()
+    @checks.mod_or_permissions()
+    async def setannouncements(self,ctx, channel:discord.Channel):
+        ch = [channel]
+        await self.config.guild(ctx.guild).announcementschannel.set(ch)
