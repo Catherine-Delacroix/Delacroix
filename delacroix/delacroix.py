@@ -596,7 +596,7 @@ class Delacroix(commands.Cog):
         formatwscore = "{}W | {}L".format(winnerscore[0],winnerscore[1])
         formatlscore = "{}W | {}L".format(loserscore[0], loserscore[1])
 
-        await ctx.send("The winner of the fight is:\n{}({})\nThe loser of the fight is:\n{}({})".format(winner, formatwscore,loser,formatlscore))
+        await ctx.send("The winner of the fight is:\n{}({})\nThe loser of the fight is:\n{}({})".format(winner.display_name, formatwscore,loser.display_name,formatlscore))
 
         await winner.remove_roles(role)
         await loser.remove_roles(role)
