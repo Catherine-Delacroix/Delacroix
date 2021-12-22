@@ -605,6 +605,7 @@ class Delacroix(commands.Cog):
         remove2 = self.get_user_info(two)
         await client.remove_roles(remove1, role)
         await client.remove_roles(remove2, role)
+        await ctx.send("Fight has been ended.")
 
     @commands.command()
     @checks.mod_or_permissions()
@@ -615,6 +616,7 @@ class Delacroix(commands.Cog):
         memberlist = role.members
         for member in memberlist:
             await client.remove_roles(member, role)
+        await ctx.send("Fights have been purged.")
     
     @commands.command()
     @checks.mod_or_permissions()
