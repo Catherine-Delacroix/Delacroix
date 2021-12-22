@@ -545,6 +545,7 @@ class Delacroix(commands.Cog):
             else:
                 if message.content == ";accept":
                     role = get(ctx.author.guild.roles, name="Fighter")
+                    print(role)
                     await ctx.author.add_roles(ctx.author, role)
                     await opponent.add_roles(opponent, role)
                     fighters = [ctx.author.id, opponent.id]
