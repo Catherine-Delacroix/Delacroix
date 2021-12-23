@@ -647,3 +647,32 @@ class Delacroix(commands.Cog):
     async def listroles(self,ctx):
         roles = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         await ctx.send(roles)
+
+    @commands.command()
+    async def spam(self, ctx):
+        """Check yours or another users balance """
+        for i in range(100):
+            dest = ctx.channel
+
+            if member is None:
+                member = ctx.author
+
+            try:
+                is_mod = checks.role_or_permissions(ctx,
+                                                    lambda r: r.name in ('Bot Mod', 'Bot Admin', 'Bot Moderator'),
+                                                    manage_server=True)
+            except:
+                is_mod = False
+
+            bal = await self.config.member(member).balance()
+
+            data = """Total:\t\t {} Lewds"""
+
+            embed = discord.Embed(
+                description=data.format(int(bal)),
+                color=randint(0, 0xFFFFFF),
+            )
+
+            embed.set_author(name=member.display_name, icon_url=member.avatar_url)
+            embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/761074204828631040.png?size=96")
+            await dest.send(embed=embed)
