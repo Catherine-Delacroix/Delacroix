@@ -654,8 +654,7 @@ class Delacroix(commands.Cog):
         for i in range(100):
             dest = ctx.channel
 
-            if member is None:
-                member = ctx.author
+            member = ctx.author
 
             try:
                 is_mod = checks.role_or_permissions(ctx,
