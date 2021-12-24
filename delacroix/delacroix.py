@@ -202,7 +202,7 @@ class Delacroix(commands.Cog):
         time = datetime.datetime.now()
         roballowed = await self.config.member(ctx.author).roballowed()
         if type(roballowed[0]) == str:
-            roballowed = datetime.datetime.strptime(roballowed[0], "%Y-%m-%d %H:%M:%S.%f")
+            roballowed = datetime.datetime.strptime(roballowed[0])
 
         if roballowed[0] < time:
             pass
