@@ -201,10 +201,11 @@ class Delacroix(commands.Cog):
     async def rob(self, ctx, member:discord.Member):
         time = datetime.datetime.utcnow()
         roballowed = await self.config.member(ctx.author).roballowed()
-        if type(roballowed[0]) == str:
-            roballowed = datetime.datetime.strptime(roballowed[0], "%Y-%m-%d %I:%M:%S.%f")
+        if type(roballowed) == str:
 
-        if roballowed[0] < time:
+            roballowed = datetime.datetime.strptime(roballowed, "%Y-%m-%d %I:%M:%S.%f")
+
+        if roballowed < time:
             pass
         else:
             message = "It hasn't been 8 hours since your last robbing attempt. Try again after {}".format(roballowed[0])
