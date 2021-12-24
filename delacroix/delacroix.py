@@ -199,9 +199,10 @@ class Delacroix(commands.Cog):
     
     @commands.command()
     async def rob(self, ctx, member:discord.Member):
-        time = datetime.datetime.now()
+        time = datetime.datetime.utcnow()
         roballowed = await self.config.member(ctx.author).roballowed()
         if type(roballowed[0]) == str:
+            print(roballowed)
             roballowed = datetime.datetime.strptime(roballowed[0])
 
         if roballowed[0] < time:
@@ -210,7 +211,7 @@ class Delacroix(commands.Cog):
             message = "It hasn't been 8 hours since your last robbing attempt. Try again after {}".format(roballowed[0])
             ctx.send(message)
 
-        nextrob = datetime.datetime.now() + datetime.timedelta(hours=8)
+        nextrob = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
         nextrob = str(nextrob)
         await self.config.member(ctx.author).roballowed.set(nextrob)
         networth = await self.config.member(ctx.author).balance()
