@@ -1,3 +1,4 @@
+from typing import _Alias
 from redbot.core import commands
 from redbot.core import Config
 import asyncio
@@ -18,6 +19,7 @@ from .cogs.utils.data import MemberConverter, NumberConverter, get, chain, creat
 from .cogs.utils.translation import _, format_table
 
 #client = discord.Client
+apikey = {'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo'}
 
 
 class Delacroix(commands.Cog):
@@ -714,10 +716,14 @@ class Delacroix(commands.Cog):
         roles = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         await ctx.send(roles)
     
-    @commands.command()
-    async def testapi(self, ctx):
+    @commands.command(aliases = ["imp", "import"])
+    async def importbalance(self, ctx):
         api = "https://unbelievaboat.com/api/v1/guilds/{}/users/{}".format(ctx.guild.id, ctx.author.id)
-        #params = {"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo"}
-        balance = requests.get(api, headers={'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo'})
-        
-        await ctx.send("{}\n[{}\n{}".format(ctx.guild.id,ctx.author.id,balance.text))
+        oldbalance = requests.get(api, headers=apikey)
+        newbalance = await self.config.member(ctx.author).balance()
+        imported = float(oldbalance['bank']) + newbalance
+        await self.config.member(ctx.author).balance.set(imported)
+        param = {'bank': 0}
+        result = requests.put(api, params= param, headers=apikey)
+
+        await ctx.send("Your balance has been imported and updated to {}\n{}".format(imported, result))
