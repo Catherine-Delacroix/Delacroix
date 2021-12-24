@@ -720,10 +720,10 @@ class Delacroix(commands.Cog):
         api = "https://unbelievaboat.com/api/v1/guilds/{}/users/{}".format(ctx.guild.id, ctx.author.id)
         oldbalance = requests.get(api, headers=apikey)
         oldbalance = oldbalance.text
+        oldbalance = oldbalance['bank']
         print(oldbalance)
-        print(oldbalance['bank'])
         newbalance = await self.config.member(ctx.author).balance()
-        imported = float(oldbalance['bank']) + newbalance
+        imported = float(oldbalance) + float(newbalance)
         await self.config.member(ctx.author).balance.set(imported)
         param = {'bank': 0}
         result = requests.put(api, params= param, headers=apikey)
