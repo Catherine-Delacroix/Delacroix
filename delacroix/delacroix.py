@@ -717,6 +717,6 @@ class Delacroix(commands.Cog):
     @commands.command()
     async def testapi(self, ctx):
         api = "https://unbelievaboat.com/api/v1/guilds/{}/users/{}".format(ctx.guild.id, ctx.author.id)
-        params = {"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo"}
-        balance = requests.get(api, params)
+        #params = {"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo"}
+        balance = requests.get(api, headers={'Authorization': 'TOK:<eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo>'})
         await ctx.send(balance)
