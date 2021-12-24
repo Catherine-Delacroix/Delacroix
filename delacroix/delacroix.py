@@ -197,6 +197,7 @@ class Delacroix(commands.Cog):
         await self.config.member(member).balance.set(final)
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
     
+    @commands.cooldown(1,28800,commands.BucketType.user)
     @commands.command()
     async def rob(self, ctx, member:discord.Member):
         networth = await self.config.member(ctx.author).balance()
@@ -204,7 +205,7 @@ class Delacroix(commands.Cog):
         base = float(networth) + float(victimcash)
         probability = float(networth)/base
         roll = uniform(0,1)
-        
+
         if probability > roll:
             stolen = float(victimcash)*probability
             stolen = round(stolen,1)
