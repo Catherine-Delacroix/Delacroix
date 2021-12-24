@@ -1,4 +1,3 @@
-from typing import _Alias
 from redbot.core import commands
 from redbot.core import Config
 import asyncio
