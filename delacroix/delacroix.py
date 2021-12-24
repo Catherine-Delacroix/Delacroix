@@ -1,4 +1,3 @@
-from _typeshed import SupportsItemAccess
 from redbot.core import commands
 from redbot.core import Config
 import asyncio
