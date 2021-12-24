@@ -202,7 +202,7 @@ class Delacroix(commands.Cog):
         time = datetime.datetime.utcnow()
         roballowed = await self.config.member(ctx.author).roballowed()
         if type(roballowed[0]) == str:
-            roballowed[0] = datetime.datetime.strptime(roballowed, "%Y-%m-%d %I:%M:%S.%f")
+            roballowed[0] = datetime.datetime.strptime(roballowed[0], "%Y-%m-%d %I:%M:%S.%f")
             
         if time > roballowed[0]:
             nextrob = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
