@@ -217,7 +217,7 @@ class Delacroix(commands.Cog):
         victimcash = await self.config.member(member).overdue()
         base = float(networth) + float(victimcash)
         probability = float(networth)/base
-        roll = random.uniform(0,1)
+        roll = uniform(0,1)
 
         if probability > roll:
             stolen = float(victimcash)*probability
