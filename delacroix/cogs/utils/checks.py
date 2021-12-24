@@ -63,20 +63,20 @@ def role_or_permissions(ctx, check, **perms):
 
 def mod_or_inv():
     def predicate(ctx):
-        return role_or_permissions(ctx, ('Bot Mod', 'Bot Admin', 'Bot Inventory', 'Bot Moderator'),
+        return role_or_permissions(ctx, ('Mod', 'Admin', 'Bot Inventory', 'Guardian'),
                                    manage_server=True)
 
     return commands.check(predicate)
 
 
 def modpredicate(ctx):
-    return role_or_permissions(ctx, lambda r: r.name in ('Bot Mod', 'Bot Admin', 'Bot Moderator'),
+    return role_or_permissions(ctx, lambda r: r.name in ('Mod', 'Admin', 'Guardian'),
                                manage_server=True)
 
 
 def mod_or_permissions(**perms):
     def predicate(ctx):
-        result = role_or_permissions(ctx, ('Bot Mod', 'Bot Admin', 'Bot Moderator'),
+        result = role_or_permissions(ctx, ('Mod', 'Admin', 'Guardian'),
                                      manage_server=True, **perms)
         if not result:
             raise CheckFailure("You need permission to use this command! "
