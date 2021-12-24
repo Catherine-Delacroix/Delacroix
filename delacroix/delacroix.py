@@ -204,7 +204,7 @@ class Delacroix(commands.Cog):
 
         if roballowed == None:
             pass
-        elif roballowed < time:
+        elif roballowed[0] < time:
             pass
         else:
             message = "It hasn't been 8 hours since your last robbing attempt. Try again after {}".format(roballowed[0])
@@ -227,7 +227,7 @@ class Delacroix(commands.Cog):
             await self.config.member(ctx.author).balance.set(networth)
             message = "{} has successfully stolen {} Lewds from {}".format(ctx.author.display_name, stolen, member.display_name)
             await ctx.send(message)
-            
+
         else:
             fine = float(victimcash)*probability
             fine = round(fine,1)
