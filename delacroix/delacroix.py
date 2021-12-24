@@ -246,6 +246,7 @@ class Delacroix(commands.Cog):
     async def crime(self, ctx):
         reward = float(1000)
         reward = reward* uniform(0,1)
+        reward = round(reward,1)
         chance = round(0,1)
         if chance > 0.5:
             overdue = await self.config.member(ctx.author).overdue()
@@ -259,6 +260,7 @@ class Delacroix(commands.Cog):
             await self.config.member(ctx.author).overdue.set(overdue)
             message = "{} gets caught commiting crimes and has to pay {} bail.".format(ctx.author.display_name, reward)
             await ctx.send(message)
+
     """
 
     AUCTION SYSTEM
