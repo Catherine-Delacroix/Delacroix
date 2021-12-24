@@ -199,52 +199,35 @@ class Delacroix(commands.Cog):
     
     @commands.command()
     async def rob(self, ctx, member:discord.Member):
-        time = datetime.datetime.utcnow()
-        roballowed = await self.config.member(ctx.author).roballowed()
-        if type(roballowed[0]) == str:
-            roballowed[0] = datetime.datetime.strptime(roballowed[0], "%Y-%m-%d %I:%M:%S.%f")
-            
-        if time > roballowed[0]:
-            nextrob = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
-            nextrob = [str(nextrob)]
-            await self.config.member(ctx.author).roballowed.set(nextrob)
-            networth = await self.config.member(ctx.author).balance()
-            victimcash = await self.config.member(member).overdue()
-            base = float(networth) + float(victimcash)
-            probability = float(networth)/base
-            roll = uniform(0,1)
+        networth = await self.config.member(ctx.author).balance()
+        victimcash = await self.config.member(member).overdue()
+        base = float(networth) + float(victimcash)
+        probability = float(networth)/base
+        roll = uniform(0,1)
+        
+        if probability > roll:
+            stolen = float(victimcash)*probability
+            stolen = round(stolen,1)
+            victimcash = victimcash - stolen
+            await self.config.member(member).balance.set(victimcash)
+            networth = networth+stolen
+            await self.config.member(ctx.author).balance.set(networth)
+            message = "{} has successfully stolen {} Lewds from {}".format(ctx.author.display_name, stolen, member.display_name)
+            await ctx.send(message)
 
-            if probability > roll:
-                stolen = float(victimcash)*probability
-                stolen = round(stolen,1)
-                victimcash = victimcash - stolen
-                await self.config.member(member).balance.set(victimcash)
-                networth = networth+stolen
-                await self.config.member(ctx.author).balance.set(networth)
-                message = "{} has successfully stolen {} Lewds from {}".format(ctx.author.display_name, stolen, member.display_name)
-                await ctx.send(message)
-
-            else:
-                fine = float(victimcash)*probability
-                fine = round(fine,1)
-                networth = networth-fine
-                networth = round(networth,1)
-                if networth >= 0:
-                    comment = ", better luck next time!"
-                else:
-                    comment = " and is now in Dept!"
-                message = "The robbing attempt has failed, {} has been fined {} Lewds{}".format(ctx.author.display_name, fine, comment)
-                await ctx.send(message)
-                await ctx.config.member(ctx.author).balance.set(networth)
         else:
-            message = "It hasn't been 8 hours since your last robbing attempt. Try again after {}".format(roballowed[0])
-            ctx.send(message)
-            return
-
+            fine = float(victimcash)*probability
+            fine = round(fine,1)
+            networth = networth-fine
+            networth = round(networth,1)
+            if networth >= 0:
+                comment = ", better luck next time!"
+            else:
+                comment = " and is now in Dept!"
+            message = "The robbing attempt has failed, {} has been fined {} Lewds{}".format(ctx.author.display_name, fine, comment)
+            await ctx.send(message)
+            await ctx.config.member(ctx.author).balance.set(networth)
         
-
-        
-
     """
 
     AUCTION SYSTEM
