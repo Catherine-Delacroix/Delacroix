@@ -201,7 +201,8 @@ class Delacroix(commands.Cog):
     async def rob(self, ctx, member:discord.Member):
         time = datetime.datetime.now()
         roballowed = await self.config.member(ctx.author).roballowed()
-        roballowed = datetime.datetime.strptime(roballowed[0], "%Y-%m-%d %H:%M:%S.%f")
+        if type(roballowed[0]) == str:
+            roballowed = datetime.datetime.strptime(roballowed[0], "%Y-%m-%d %H:%M:%S.%f")
 
         if roballowed[0] < time:
             pass
