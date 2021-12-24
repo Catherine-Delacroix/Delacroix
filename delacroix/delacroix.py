@@ -2,7 +2,7 @@ from redbot.core import commands
 from redbot.core import Config
 import asyncio
 from collections import Counter
-from random import choice, randint, random
+from random import choice, randint, random, uniform
 import json
 from recordclass import recordclass
 
