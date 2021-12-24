@@ -720,4 +720,4 @@ class Delacroix(commands.Cog):
         #params = {"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo"}
         balance = requests.get(api, headers={'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo'})
         
-        await ctx.send("{}\n[{}\n{}".format(ctx.guild.id,ctx.author.id,balance))
+        await ctx.send("{}\n[{}\n{}".format(ctx.guild.id,ctx.author.id,balance.text))
