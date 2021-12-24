@@ -719,7 +719,7 @@ class Delacroix(commands.Cog):
     async def importbalance(self, ctx):
         api = "https://unbelievaboat.com/api/v1/guilds/{}/users/{}".format(ctx.guild.id, ctx.author.id)
         oldbalance = requests.get(api, headers=apikey)
-        oldbalance = oldbalance.json
+        oldbalance = oldbalance.json()
         print(oldbalance)
         #oldbalance = dict(oldbalance)
         #print(oldbalance)
