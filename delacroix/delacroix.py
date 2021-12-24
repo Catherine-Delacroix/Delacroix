@@ -39,7 +39,7 @@ class Delacroix(commands.Cog):
             "balance":0,
             "overdue":0,
             "score":[0,0],
-            "roballowed":[datetime.datetime.utcnow],
+            "roballowed":[datetime.datetime.utcnow()],
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
