@@ -228,7 +228,37 @@ class Delacroix(commands.Cog):
             message = "The robbing attempt has failed, {} has been fined {} Lewds{}".format(ctx.author.display_name, fine, comment)
             await ctx.send(message)
             await ctx.config.member(ctx.author).balance.set(networth)
+    
+    @commands.cooldown(1, 10800, commands.BucketType.user)
+    @commands.command()
+    async def work(self,ctx):
+        reward = float(500)
+        reward = reward* uniform(0,1)
+        reward = round(reward,1)
+        overdue = await self.config.member(ctx.author).overdue()
+        overdue = float(overdue) + reward
+        await self.config.member(ctx.author).overdue.set(overdue)
+        message = "{} works hard and earns {} for their effort.".format(ctx.author.display_name, reward)
+        await ctx.send(message)
         
+    @commands.cooldown(1,18000, commands.BucketType.user)
+    @commands.command()
+    async def crime(self, ctx):
+        reward = float(1000)
+        reward = reward* uniform(0,1)
+        chance = round(0,1)
+        if chance > 0.5:
+            overdue = await self.config.member(ctx.author).overdue()
+            overdue = float(overdue) + reward
+            await self.config.member(ctx.author).overdue.set(overdue)
+            message = "Through illegal means {} manages to score {} Lewds.".format(ctx.author.display_name, reward)
+            await ctx.send(message)
+        else:
+            overdue = await self.config.member(ctx.author).overdue()
+            overdue = float(overdue) - reward
+            await self.config.member(ctx.author).overdue.set(overdue)
+            message = "{} gets caught commiting crimes and has to pay {} bail.".format(ctx.author.display_name, reward)
+            await ctx.send(message)
     """
 
     AUCTION SYSTEM
