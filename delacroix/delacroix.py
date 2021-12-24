@@ -39,7 +39,7 @@ class Delacroix(commands.Cog):
             "balance":0,
             "overdue":0,
             "score":[0,0],
-            "roballowed":["2021-12-24 12:30:58.821887"],
+            "roballowed":[datetime.datetime.utcnow()],
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -206,7 +206,7 @@ class Delacroix(commands.Cog):
             
         if time > roballowed:
             nextrob = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
-            nextrob = str(nextrob)
+            nextrob = [str(nextrob)]
             await self.config.member(ctx.author).roballowed.set(nextrob)
             networth = await self.config.member(ctx.author).balance()
             victimcash = await self.config.member(member).overdue()
