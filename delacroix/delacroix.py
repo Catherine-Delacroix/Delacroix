@@ -39,7 +39,7 @@ class Delacroix(commands.Cog):
             "balance":0,
             "overdue":0,
             "score":[0,0],
-            "roballowed":[datetime.datetime.utcnow()],
+            "roballowed":["2021-12-24 12:30:58.821887"],
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -203,8 +203,8 @@ class Delacroix(commands.Cog):
         roballowed = await self.config.member(ctx.author).roballowed()
         if type(roballowed) == str:
             roballowed = datetime.datetime.strptime(roballowed, "%Y-%m-%d %I:%M:%S.%f")
-
-        if roballowed < time:
+            
+        if time > roballowed:
             nextrob = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
             nextrob = str(nextrob)
             await self.config.member(ctx.author).roballowed.set(nextrob)
