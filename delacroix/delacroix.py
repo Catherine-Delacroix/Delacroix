@@ -201,18 +201,23 @@ class Delacroix(commands.Cog):
     async def rob(self, ctx, member:discord.Member):
         time = datetime.datetime.now()
         roballowed = await self.config.member(ctx.author).roballowed()
-        if roballowed[0] == None:
+
+        if roballowed == None:
             pass
         elif roballowed < time:
             pass
         else:
             message = "It hasn't been 8 hours since your last robbing attempt. Try again after {}".format(roballowed[0])
             ctx.send(message)
+
+        nextrob = datetime.datetime.now() + datetime.timedelta(hours=8)
+        await self.config.member(ctx.author).roballowed.set(nextrob)
         networth = await self.config.member(ctx.author).balance()
         victimcash = await self.config.member(member).overdue()
         base = float(networth) + float(victimcash)
         probability = float(networth)/base
         roll = random.uniform(0,1)
+
         if probability > roll:
             stolen = float(victimcash)*probability
             stolen = round(stolen,1)
@@ -222,6 +227,7 @@ class Delacroix(commands.Cog):
             await self.config.member(ctx.author).balance.set(networth)
             message = "{} has successfully stolen {} Lewds from {}".format(ctx.author.display_name, stolen, member.display_name)
             await ctx.send(message)
+            
         else:
             fine = float(victimcash)*probability
             fine = round(fine,1)
