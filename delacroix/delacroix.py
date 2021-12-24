@@ -6,6 +6,7 @@ from random import choice, randint, random, uniform
 import json
 from recordclass import recordclass
 
+import requests
 import discord
 from discord.ext import tasks
 import datetime
@@ -712,3 +713,10 @@ class Delacroix(commands.Cog):
     async def listroles(self,ctx):
         roles = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         await ctx.send(roles)
+    
+    @commands.command()
+    async def testapi(self, ctx):
+        api = "https://unbelievaboat.com/api/v1/guilds/{}/users/{}".format(ctx.guild.id, ctx.author.id)
+        params = {"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfaWQiOiI5MjQwMTM3Mzk5OTI1NTA0NzMiLCJpYXQiOjE2NDAzNzI0NDJ9.548ILwUHby0eBE3qh81gF9P3EZqzMCsvmpMAvmW8Tyo"}
+        balance = requests.get(api, params)
+        await ctx.send(balance)
