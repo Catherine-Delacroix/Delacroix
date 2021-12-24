@@ -201,10 +201,10 @@ class Delacroix(commands.Cog):
     async def rob(self, ctx, member:discord.Member):
         time = datetime.datetime.utcnow()
         roballowed = await self.config.member(ctx.author).roballowed()
-        if type(roballowed) == str:
-            roballowed = datetime.datetime.strptime(roballowed, "%Y-%m-%d %I:%M:%S.%f")
+        if type(roballowed[0]) == str:
+            roballowed[0] = datetime.datetime.strptime(roballowed, "%Y-%m-%d %I:%M:%S.%f")
             
-        if time > roballowed:
+        if time > roballowed[0]:
             nextrob = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
             nextrob = [str(nextrob)]
             await self.config.member(ctx.author).roballowed.set(nextrob)
