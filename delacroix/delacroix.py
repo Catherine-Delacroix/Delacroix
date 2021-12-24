@@ -39,7 +39,7 @@ class Delacroix(commands.Cog):
             "balance":0,
             "overdue":0,
             "score":[0,0],
-            "roballowed":[],
+            "roballowed":["2021-12-13 18:10:58"],
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -202,15 +202,15 @@ class Delacroix(commands.Cog):
         time = datetime.datetime.now()
         roballowed = await self.config.member(ctx.author).roballowed()
 
-        if roballowed == None:
-            pass
+        if roballowed[0] == None:
+            await self.config.member(ctx.author).roballowed.set(time)
         elif roballowed[0] < time:
             pass
         else:
             message = "It hasn't been 8 hours since your last robbing attempt. Try again after {}".format(roballowed[0])
             ctx.send(message)
 
-        nextrob = datetime.datetime.now() + datetime.timedelta(hours=8)
+        nextrob = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
         await self.config.member(ctx.author).roballowed.set(nextrob)
         networth = await self.config.member(ctx.author).balance()
         victimcash = await self.config.member(member).overdue()
