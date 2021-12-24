@@ -1,8 +1,9 @@
+from _typeshed import SupportsItemAccess
 from redbot.core import commands
 from redbot.core import Config
 import asyncio
 from collections import Counter
-from random import choice, randint
+from random import choice, randint, random
 import json
 from recordclass import recordclass
 
@@ -38,7 +39,8 @@ class Delacroix(commands.Cog):
         default_member = {
             "balance":0,
             "overdue":0,
-            "score":[0,0]
+            "score":[0,0],
+            "roballowed":[],
         }
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
@@ -195,6 +197,46 @@ class Delacroix(commands.Cog):
         final = bal + amount
         await self.config.member(member).balance.set(final)
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
+    
+    @commands.command()
+    async def rob(self, ctx, member:discord.Member):
+        time = datetime.datetime.now()
+        roballowed = await self.config.member(ctx.author).roballowed()
+        if roballowed[0] == None:
+            pass
+        elif roballowed < time:
+            pass
+        else:
+            message = "It hasn't been 8 hours since your last robbing attempt. Try again after {}".format(roballowed[0])
+            ctx.send(message)
+        networth = await self.config.member(ctx.author).balance()
+        victimcash = await self.config.member(member).overdue()
+        base = float(networth) + float(victimcash)
+        probability = float(networth)/base
+        roll = random.uniform(0,1)
+        if probability > roll:
+            stolen = float(victimcash)*probability
+            stolen = round(stolen,1)
+            victimcash = victimcash - stolen
+            await self.config.member(member).balance.set(victimcash)
+            networth = networth+stolen
+            await self.config.member(ctx.author).balance.set(networth)
+            message = "{} has successfully stolen {} Lewds from {}".format(ctx.author.display_name, stolen, member.display_name)
+            await ctx.send(message)
+        else:
+            fine = float(victimcash)*probability
+            fine = round(fine,1)
+            networth = networth-fine
+            networth = round(networth,1)
+            if networth >= 0:
+                comment = ", better luck next time!"
+            else:
+                comment = " and is now in Dept!"
+            message = "The robbing attempt has failed, {} has been fined {} Lewds{}".format(ctx.author.display_name, fine, comment)
+            await ctx.send(message)
+            await ctx.config.member(ctx.author).balance.set(networth)
+
+        
 
     """
 
