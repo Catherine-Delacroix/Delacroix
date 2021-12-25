@@ -138,8 +138,8 @@ class Delacroix(commands.Cog):
     @commands.command(aliases=["setb", "setbal"])
     async def setbalance(self, ctx, amount: NumberConverter, *members: MemberConverter):
         """Set the Lewds of the given members to an amount
-        Example: !setbalance 500 everyone
-        Example: !setbalance 500 @Henry#6174 @JohnDoe#0001
+        Example: ;setbalance 500 everyone
+        Example: ;setbalance 500 @Henry#6174 @JohnDoe#0001
         Requires Bot Moderator or Bot Admin"""
 
         members = chain(members)
@@ -150,11 +150,11 @@ class Delacroix(commands.Cog):
         await ctx.send("Balances changed")
 
     @checks.mod_or_permissions()
-    @commands.command(alias = ['give', 'gm'])
+    @commands.command(alias = ['give', 'gm', 'add-money'])
     async def givemoney(self, ctx, amount: NumberConverter, *members: MemberConverter):
         """Give the member's Lewds
-        Example: !givemoney 5000 @Henry#6174 @JohnDoe#0001
-        Example: !givemoney 50 everyone (or @\u200beveryone)
+        Example: ;givemoney 5000 @Henry#6174 @JohnDoe#0001
+        Example: ;givemoney 50 everyone (or @\u200beveryone)
         Requires Bot Moderator or Bot Admin"""
         members = chain(members)
 
@@ -166,11 +166,11 @@ class Delacroix(commands.Cog):
         await ctx.send("Lewds given")
 
     @checks.mod_or_permissions()
-    @commands.command( aliases = ['take', 'tm'])
+    @commands.command( aliases = ['take', 'tm', 'remove-money'])
     async def takemoney(self, ctx, amount: NumberConverter, *members: MemberConverter):
         """Take the user's Lewds
-        Example: !takemoney 5000 @Henry#6174
-        Requires Bot Moderator or Bot Admin"""
+        Example: ;takemoney 5000 @Henry#6174
+        Requires Moderator or Admin"""
         members = chain(members)
 
         for member in members:
@@ -182,7 +182,7 @@ class Delacroix(commands.Cog):
     @commands.command(aliases = ['p'])
     async def pay(self, ctx, amount: NumberConverter, member: discord.Member):
         """Pay another user Lewds
-        Example: rp!pay 500 @Henry#6174"""
+        Example: ;pay 500 @Henry#6174"""
         if ctx.author.bot:
             await ctx.send(
                 await ("Bots don't have Lewds to pay other people! Use !givemoney instead of !pay"))
@@ -293,7 +293,7 @@ class Delacroix(commands.Cog):
     async def create(self, ctx, item: str, cost: NumberConverter, picture: str, expires_in: int, *,description: str):
         """Create a new auction listing. The listing will return a unique identifier for the item.
          This is used to buy the item later.
-        Example: !list item 500 pictureurl"""
+        Example: ;list item 500 pictureurl"""
         #try:
         cost = abs(cost)
         market = await self.config.guild(ctx.guild).market()
@@ -516,6 +516,7 @@ class Delacroix(commands.Cog):
         else:
             await ctx.send("Your bid isn't high enough.")
 
+    @checks.mod_or_permissions()
     @commands.command()
     async def resetmarket(self, ctx):
         empty = {}
