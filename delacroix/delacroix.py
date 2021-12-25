@@ -64,15 +64,16 @@ class Delacroix(commands.Cog):
             channel = guild.get_channel(channel['channel'])
             #print(channel)
             for id in market:
-                #print(id)
+                print(id)
                 date = datetime.datetime.utcnow()
                 #print(date)
                 expire = datetime.datetime.strptime(market[id]['expiration'], "%Y-%m-%d %H:%M:%S.%f")
+                print(expire)
                 #print(expire)
                 if expire < date:
                     #print("TRYING TO UPDATE")
                     msg = channel.get_partial_message(market[id]['message'])
-                    print(msg)
+                    #print(msg)
                     await msg.delete()
                     winner = self.get_user(market[id]['user'])
                     announce = "{} has won {} for {} Lewds".format(winner, market[id]['item'], market[id]['cost'])
@@ -728,7 +729,7 @@ class Delacroix(commands.Cog):
         newbalance = await self.config.member(ctx.author).balance()
         imported = float(oldbalance) + float(newbalance)
         await self.config.member(ctx.author).balance.set(imported)
-        param = {'bank': 0}
-        result = requests.put(api, params= param, headers=apikey)
+        data = {'bank': 0}
+        result = requests.put(api, data= data, headers=apikey)
 
         await ctx.send("Your balance has been imported and updated to {}\n{}".format(imported, result))
