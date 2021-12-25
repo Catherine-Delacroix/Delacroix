@@ -150,7 +150,7 @@ class Delacroix(commands.Cog):
         await ctx.send("Balances changed")
 
     @checks.mod_or_permissions()
-    @commands.command()
+    @commands.command(alias = ['give', 'gm'])
     async def givemoney(self, ctx, amount: NumberConverter, *members: MemberConverter):
         """Give the member's Lewds
         Example: !givemoney 5000 @Henry#6174 @JohnDoe#0001
@@ -166,7 +166,7 @@ class Delacroix(commands.Cog):
         await ctx.send("Lewds given")
 
     @checks.mod_or_permissions()
-    @commands.command()
+    @commands.command( aliases = ['take', 'tm'])
     async def takemoney(self, ctx, amount: NumberConverter, *members: MemberConverter):
         """Take the user's Lewds
         Example: !takemoney 5000 @Henry#6174
@@ -179,7 +179,7 @@ class Delacroix(commands.Cog):
             await self.config.member(member).balance.set(final)
             await ctx.send("Lewds taken")
 
-    @commands.command()
+    @commands.command(aliases = ['p'])
     async def pay(self, ctx, amount: NumberConverter, member: discord.Member):
         """Pay another user Lewds
         Example: rp!pay 500 @Henry#6174"""
@@ -200,70 +200,89 @@ class Delacroix(commands.Cog):
         await self.config.member(member).balance.set(final)
         await ctx.send("Successfully paid {} Lewds to {}").format(amount, member)
     
-    @commands.cooldown(1,28800,commands.BucketType.user)
-    @commands.command()
-    async def rob(self, ctx, member:discord.Member):
-        networth = await self.config.member(ctx.author).balance()
-        victimcash = await self.config.member(member).overdue()
-        base = float(networth) + float(victimcash)
-        probability = float(networth)/base
-        roll = uniform(0,1)
+    @commands.command(aliases = ["imp", "import"])
+    async def importbalance(self, ctx):
+        api = "https://unbelievaboat.com/api/v1/guilds/{}/users/{}".format(ctx.guild.id, ctx.author.id)
+        oldbalance = requests.get(api, headers=apikey)
+        oldbalance = oldbalance.json()
+        print(oldbalance)
+        oldbalance = oldbalance['bank']
+        print(oldbalance)
+        newbalance = await self.config.member(ctx.author).balance()
+        imported = float(oldbalance) + float(newbalance)
+        await self.config.member(ctx.author).balance.set(imported)
+        data = {'bank': 0}
+        result = requests.put(api, params={'q': 'requests+language:python'}, json= data, headers=apikey)
 
-        if probability > roll:
-            stolen = float(victimcash)*probability
-            stolen = round(stolen,1)
-            victimcash = victimcash - stolen
-            await self.config.member(member).balance.set(victimcash)
-            networth = networth+stolen
-            await self.config.member(ctx.author).balance.set(networth)
-            message = "{} has successfully stolen {} Lewds from {}".format(ctx.author.display_name, stolen, member.display_name)
-            await ctx.send(message)
+        await ctx.send("Your balance has been imported and updated to {}\n{}".format(imported, result))
 
-        else:
-            fine = float(victimcash)*probability
-            fine = round(fine,1)
-            networth = networth-fine
-            networth = round(networth,1)
-            if networth >= 0:
-                comment = ", better luck next time!"
-            else:
-                comment = " and is now in Dept!"
-            message = "The robbing attempt has failed, {} has been fined {} Lewds{}".format(ctx.author.display_name, fine, comment)
-            await ctx.send(message)
-            await ctx.config.member(ctx.author).balance.set(networth)
+
     
-    @commands.cooldown(1, 10800, commands.BucketType.user)
-    @commands.command()
-    async def work(self,ctx):
-        reward = float(500)
-        reward = reward* uniform(0,1)
-        reward = round(reward,1)
-        overdue = await self.config.member(ctx.author).overdue()
-        overdue = float(overdue) + reward
-        await self.config.member(ctx.author).overdue.set(overdue)
-        message = "{} works hard and earns {} for their effort.".format(ctx.author.display_name, reward)
-        await ctx.send(message)
-        
-    @commands.cooldown(1,18000, commands.BucketType.user)
-    @commands.command()
-    async def crime(self, ctx):
-        reward = float(1000)
-        reward = reward* uniform(0,1)
-        reward = round(reward,1)
-        chance = round(0,1)
-        if chance > 0.5:
-            overdue = await self.config.member(ctx.author).overdue()
-            overdue = float(overdue) + reward
-            await self.config.member(ctx.author).overdue.set(overdue)
-            message = "Through illegal means {} manages to score {} Lewds.".format(ctx.author.display_name, reward)
-            await ctx.send(message)
-        else:
-            overdue = await self.config.member(ctx.author).overdue()
-            overdue = float(overdue) - reward
-            await self.config.member(ctx.author).overdue.set(overdue)
-            message = "{} gets caught commiting crimes and has to pay {} bail.".format(ctx.author.display_name, reward)
-            await ctx.send(message)
+    # @commands.cooldown(1,28800,commands.BucketType.user)
+    # @commands.command()
+    # async def rob(self, ctx, member:discord.Member):
+    #     networth = await self.config.member(ctx.author).balance()
+    #     victimcash = await self.config.member(member).overdue()
+    #     base = float(networth) + float(victimcash)
+    #     probability = float(networth)/base
+    #     roll = uniform(0,1)
 
+    #     if probability > roll:
+    #         stolen = float(victimcash)*probability
+    #         stolen = round(stolen,1)
+    #         victimcash = victimcash - stolen
+    #         await self.config.member(member).balance.set(victimcash)
+    #         networth = networth+stolen
+    #         await self.config.member(ctx.author).balance.set(networth)
+    #         message = "{} has successfully stolen {} Lewds from {}".format(ctx.author.display_name, stolen, member.display_name)
+    #         await ctx.send(message)
+
+    #     else:
+    #         fine = float(victimcash)*probability
+    #         fine = round(fine,1)
+    #         networth = networth-fine
+    #         networth = round(networth,1)
+    #         if networth >= 0:
+    #             comment = ", better luck next time!"
+    #         else:
+    #             comment = " and is now in Dept!"
+    #         message = "The robbing attempt has failed, {} has been fined {} Lewds{}".format(ctx.author.display_name, fine, comment)
+    #         await ctx.send(message)
+    #         await ctx.config.member(ctx.author).balance.set(networth)
+    
+    # @commands.cooldown(1, 10800, commands.BucketType.user)
+    # @commands.command()
+    # async def work(self,ctx):
+    #     reward = float(500)
+    #     reward = reward* uniform(0,1)
+    #     reward = round(reward,1)
+    #     overdue = await self.config.member(ctx.author).overdue()
+    #     overdue = float(overdue) + reward
+    #     await self.config.member(ctx.author).overdue.set(overdue)
+    #     message = "{} works hard and earns {} for their effort.".format(ctx.author.display_name, reward)
+    #     await ctx.send(message)
+        
+    # @commands.cooldown(1,18000, commands.BucketType.user)
+    # @commands.command()
+    # async def crime(self, ctx):
+    #     reward = float(1000)
+    #     reward = reward* uniform(0,1)
+    #     reward = round(reward,1)
+    #     chance = round(0,1)
+    #     if chance > 0.5:
+    #         overdue = await self.config.member(ctx.author).overdue()
+    #         overdue = float(overdue) + reward
+    #         await self.config.member(ctx.author).overdue.set(overdue)
+    #         message = "Through illegal means {} manages to score {} Lewds.".format(ctx.author.display_name, reward)
+    #         await ctx.send(message)
+    #     else:
+    #         overdue = await self.config.member(ctx.author).overdue()
+    #         overdue = float(overdue) - reward
+    #         await self.config.member(ctx.author).overdue.set(overdue)
+    #         message = "{} gets caught commiting crimes and has to pay {} bail.".format(ctx.author.display_name, reward)
+    #         await ctx.send(message)
+
+    
     """
 
     AUCTION SYSTEM
@@ -716,18 +735,4 @@ class Delacroix(commands.Cog):
         roles = discord.utils.get(ctx.author.guild.roles, name="Fighter")
         await ctx.send(roles)
     
-    @commands.command(aliases = ["imp", "import"])
-    async def importbalance(self, ctx):
-        api = "https://unbelievaboat.com/api/v1/guilds/{}/users/{}".format(ctx.guild.id, ctx.author.id)
-        oldbalance = requests.get(api, headers=apikey)
-        oldbalance = oldbalance.json()
-        print(oldbalance)
-        oldbalance = oldbalance['bank']
-        print(oldbalance)
-        newbalance = await self.config.member(ctx.author).balance()
-        imported = float(oldbalance) + float(newbalance)
-        await self.config.member(ctx.author).balance.set(imported)
-        data = {'bank': 0}
-        result = requests.put(api, params={'q': 'requests+language:python'}, json= data, headers=apikey)
-
-        await ctx.send("Your balance has been imported and updated to {}\n{}".format(imported, result))
+    
