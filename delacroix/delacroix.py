@@ -722,14 +722,12 @@ class Delacroix(commands.Cog):
         oldbalance = requests.get(api, headers=apikey)
         oldbalance = oldbalance.json()
         print(oldbalance)
-        #oldbalance = dict(oldbalance)
-        #print(oldbalance)
         oldbalance = oldbalance['bank']
         print(oldbalance)
         newbalance = await self.config.member(ctx.author).balance()
         imported = float(oldbalance) + float(newbalance)
         await self.config.member(ctx.author).balance.set(imported)
         data = {'bank': 0}
-        result = requests.put(api, data= data, headers=apikey)
+        result = requests.put(api, params={'q': 'requests+language:python'}, json= data, headers=apikey)
 
         await ctx.send("Your balance has been imported and updated to {}\n{}".format(imported, result))
